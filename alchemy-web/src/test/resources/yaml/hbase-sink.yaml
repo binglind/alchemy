@@ -1,0 +1,14 @@
+row-keys:
+    - id
+buffer-size: 1048576 # byte
+family: s    # 单个family
+family-columns:    #多个family
+    s1:           # s1对应的列
+        - first
+        - id
+    s2:          # s2对应的列
+        - last
+        - score
+node: /hbase-unsecure
+table-name: flink-test
+zookeeper: localhost:2181

@@ -1,0 +1,5 @@
+base-path: /tmp
+batch-size: 1073741824
+part-prefix: ''
+part-suffix: ''
+

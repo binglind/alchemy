@@ -1,0 +1,75 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="job">
+            <h2><span jhiTranslate="alchemyApp.job.detail.title">Job</span> {{job.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="alchemyApp.job.name">Name</span></dt>
+                <dd>
+                    <span>{{job.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'alchemyApp.JobType.' + job.type}}">{{job.type}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.config">Config</span></dt>
+                <dd>
+                    <span>{{job.config}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.remark">Remark</span></dt>
+                <dd>
+                    <span>{{job.remark}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.clusterJobId">Cluster Job Id</span></dt>
+                <dd>
+                    <span>{{job.clusterJobId}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.status">Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'alchemyApp.JobStatus.' + job.status}}">{{job.status}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{job.createdBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.createdDate">Created Date</span></dt>
+                <dd>
+                    <span>{{job.createdDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.lastModifiedBy">Last Modified By</span></dt>
+                <dd>
+                    <span>{{job.lastModifiedBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.lastModifiedDate">Last Modified Date</span></dt>
+                <dd>
+                    <span>{{job.lastModifiedDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.business">Business</span></dt>
+                <dd>
+                    <div *ngIf="job.businessId">
+                        <a [routerLink]="['/business', job.businessId, 'view']">{{job.businessId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.job.cluster">Cluster</span></dt>
+                <dd>
+                    <div *ngIf="job.clusterId">
+                        <a [routerLink]="['/cluster', job.clusterId, 'view']">{{job.clusterId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/job', job.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

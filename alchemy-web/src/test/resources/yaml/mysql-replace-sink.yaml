@@ -1,0 +1,10 @@
+driver-name: com.zaxxer.hikari.HikariDataSource
+url: jdbc:mysql://localhost:3306/flink_test?useUnicode=true&characterEncoding=utf8&useSSL=false
+username: root
+password: 123456
+query: replace into insert_test (id,first,last,score) values (?,?,?,?)
+parameter-types:
+    - 'INT'
+    - 'VARCHAR'
+    - 'VARCHAR'
+    - 'DOUBLE'

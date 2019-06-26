@@ -1,0 +1,30 @@
+{
+  "alchemyApp": {
+    "udf": {
+      "home": {
+        "title": "用户函数",
+        "createLabel": "创建新 用户函数",
+        "createOrEditLabel": "创建或编辑 用户函数"
+      },
+      "created": "用户函数 {{ param }} 创建成功",
+      "updated": "用户函数 {{ param }} 更新成功",
+      "deleted": "用户函数 {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 用户函数 {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "用户函数"
+      },
+      "name": "名称",
+      "type": "类型",
+      "value": "值",
+      "dependency": "依赖",
+      "remark": "备注",
+      "createdBy": "创建者",
+      "createdDate": "创建时间",
+      "lastModifiedBy": "修改者",
+      "lastModifiedDate": "修改时间",
+      "business": "业务"
+    }
+  }
+}

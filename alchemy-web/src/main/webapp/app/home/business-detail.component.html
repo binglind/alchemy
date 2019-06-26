@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="business">
+            <h2><span jhiTranslate="alchemyApp.business.detail.title">Business</span> {{business.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="alchemyApp.business.name">Name</span></dt>
+                <dd>
+                    <span>{{business.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.business.remark">Remark</span></dt>
+                <dd>
+                    <span>{{business.remark}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.business.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{business.createdBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.business.createdDate">Created Date</span></dt>
+                <dd>
+                    <span>{{business.createdDate}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/business', business.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

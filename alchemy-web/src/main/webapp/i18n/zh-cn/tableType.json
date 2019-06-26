@@ -1,0 +1,10 @@
+{
+  "alchemyApp": {
+    "TableType": {
+      "null": "",
+      "TABLE": "源表",
+      "VIEW": "视图",
+      "SIDE": "维表"
+    }
+  }
+}

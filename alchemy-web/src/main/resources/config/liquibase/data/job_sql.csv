@@ -1,0 +1,4 @@
+id;"jhi_sql";"created_by";"created_date";"last_modified_by";"last_modified_date";job_id
+1;"insert into kafka_sink select * from first_source";"admin";"2019-06-13 03:44:11";"admin";"2019-06-13 03:44:11";1
+2;"insert into dubbo_sink select * from first_source";"admin";"2019-06-18 02:16:06";"admin";"2019-06-18 02:16:06";1
+5;"insert into file_sink select * from kafka_applog_view";"admin";"2019-06-18 10:27:00";"admin";"2019-06-18 10:28:34";3

@@ -1,0 +1,15 @@
+#sentinel:
+#    sentinels: localhost:26379
+#    master: cache101
+name: test
+host: localhost
+port: 6379
+database: 2
+keys:
+    - first
+command: set
+members:
+    - first
+scores:
+    - score
+ttl: 1800

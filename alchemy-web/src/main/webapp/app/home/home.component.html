@@ -1,0 +1,77 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="alchemyApp.business.home.title">Businesses</span>
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-business" [routerLink]="['new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="alchemyApp.business.home.createLabel">
+            Create new Business
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+
+    <div class="table-responsive" *ngIf="businesses">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span jhiTranslate="alchemyApp.business.name">Name</span></th>
+                <th><span jhiTranslate="alchemyApp.business.remark">Remark</span></th>
+                <th><span jhiTranslate="alchemyApp.business.createdBy">Created By</span></th>
+                <th><span jhiTranslate="alchemyApp.business.createdDate">Created Date</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let business of businesses ;trackBy: trackId">
+                <td><a [routerLink]="['/business', business.id, 'view' ]">{{business.id}}</a></td>
+                <td>{{business.name}}</td>
+                <td>{{business.remark}}</td>
+                <td>{{business.createdBy}}</td>
+                <td>{{business.createdDate | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/cluster', business.id ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.cluster">Cluster</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/source', business.id ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.source">Source</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/udf', business.id]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.udf">Udf</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/sink', business.id]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.sink">Sink</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/job', business.id]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.job">Job</span>
+                        </button>
+                        <!--<button type="submit"-->
+                        <!--[routerLink]="['/business', business.id, 'edit']"-->
+                        <!--class="btn btn-primary btn-sm">-->
+                        <!--<fa-icon [icon]="'pencil-alt'"></fa-icon>-->
+                        <!--<span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>-->
+                        <!--</button>-->
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

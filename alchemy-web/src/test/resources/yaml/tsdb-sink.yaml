@@ -1,0 +1,6 @@
+url: http://localhost:4242
+metrics:    # 指定metric是哪些字段
+    - score
+tags:  # 指定tag是哪些字段
+    - first
+    - last

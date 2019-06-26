@@ -1,0 +1,9 @@
+cache: true
+dependency: org.apache.flink:flink-sql-client:1.5.4  #just for test
+parallelism: 2
+program-args: --sampler 2 --test true
+entry-class: org.apache.flink.table.client.SqlClient  # just for test
+savepoint-path: /flink/savepoint
+allow-non-restored-state: true
+
+

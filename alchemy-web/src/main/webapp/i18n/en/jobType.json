@@ -1,0 +1,9 @@
+{
+  "alchemyApp": {
+    "JobType": {
+      "null": "",
+      "JAR": "JAR",
+      "SQL": "SQL"
+    }
+  }
+}

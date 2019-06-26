@@ -1,0 +1,14 @@
+{
+  "alchemyApp": {
+    "JobStatus": {
+      "null": "",
+      "CREATE": "CREATE",
+      "UPDATE": "UPDATE",
+      "SUBMIT": "SUBMIT",
+      "RUNNING": "RUNNING",
+      "FAILED": "FAILED",
+      "CANCELED": "CANCELED",
+      "FINISHED": "FINISHED"
+    }
+  }
+}

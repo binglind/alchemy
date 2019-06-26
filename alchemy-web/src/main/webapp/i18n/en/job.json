@@ -1,0 +1,34 @@
+{
+  "alchemyApp": {
+    "job": {
+      "home": {
+        "title": "Jobs",
+        "createLabel": "Create a new Job",
+        "createOrEditLabel": "Create or edit a Job"
+      },
+      "created": "A new Job is created with identifier {{ param }}",
+      "updated": "A Job is updated with identifier {{ param }}",
+      "deleted": "A Job is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Job {{ id }}?"
+      },
+      "rescale": "Please enter the newParallelism",
+      "detail": {
+        "title": "Job"
+      },
+      "name": "Name",
+      "type": "Type",
+      "config": "Config",
+      "remark": "Remark",
+      "clusterJobId": "Cluster Job Id",
+      "status": "Status",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "business": "Business",
+      "cluster": "Cluster",
+      "sql": "Sql"
+    }
+  }
+}

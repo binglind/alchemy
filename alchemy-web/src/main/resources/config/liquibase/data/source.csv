@@ -1,0 +1,59 @@
+id;"name";"table_type";"source_type";"config";"remark";"created_by";"created_date";"last_modified_by";"last_modified_date";business_id
+1;"first_source";"TABLE";"KAFKA010";"schema:
+  - name: syslog_host
+    type: VARCHAR
+  - name: syslog_tag
+    type: VARCHAR
+  - name: am_datetime
+    type: TIMESTAMP    
+  - name: am_level
+    type: VARCHAR     
+  - name: am_class
+    type: VARCHAR  
+  - name: am_marker
+    type: VARCHAR      
+  - name: message
+    type: VARCHAR
+  - name: procTime
+    type: TIMESTAMP
+    proctime: true
+  - name: rowTime
+    type: TIMESTAMP
+    rowtime:
+      timestamps:
+        type: \"from-field\"
+        from: \"am_datetime\"
+      watermarks:
+        type: \"periodic-bounded\"
+        delay: \"1000\"   
+connector:
+  topic: app-log
+  properties:
+      bootstrap.servers: 127.0.0.1:9092
+      group.id: fileGroup
+format:
+  type: grok
+  properties:
+      retain: true
+      field-name: message
+      regular: '\\[%{DATA:syslog_host}\\] \\[%{DATA:syslog_tag}\\] %{DATA:am_datetime} %{LOGLEVEL:am_level}%{SPACE}%{DATA:am_class}(?: traceId\\:%{DATA:traceId}|)(?: spandId\\:%{DATA:spandId}|)(?: parentId\\:%{DATA:parentId}|) (?:%{DATA:am_marker}([。|：|；])|)%{SPACE}(?:json\\:%{SPACE}%{GREEDYDATA:am_json}|%{GREEDYDATA:am_msg})'
+";"第一个测试数据源";"admin";"2019-06-13 03:05:00";"admin";"2019-06-18 07:32:57";1
+2;"first_csv";"TABLE";"CSV";"  schema:
+  - name: first
+    type: VARCHAR
+  - name: id
+    type: INT
+  - name: score
+    type: DOUBLE
+  - name: last
+    type: VARCHAR
+  connector:
+      property-version: 1
+      type: csv
+      path: /source/source.csv
+      field-delim: '#'
+      row-delim: '$'
+      ignore-first-line: true
+      ignore-comments: '%'";"测试从csv读取数据";"admin";"2019-06-13 03:35:00";"admin";"2019-06-18 04:48:25";1
+3;"first_view";"VIEW";"CSV";"select * from first_csv";"第一个视图";"admin";"2019-06-13 03:36:25";"admin";"2019-06-13 03:36:25";1
+4;"kafka_applog_view";"VIEW";"KAFKA010";"select k.*, HashCode(k.syslog_host) as h_host , SPLIT(k.am_class,':') as class from first_source  k";"应用日志的视图";"admin";"2019-06-18 10:27:00";"admin";"2019-06-19 08:50:44";1

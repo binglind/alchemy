@@ -1,0 +1,44 @@
+{
+  "alchemyApp": {
+    "job": {
+      "home": {
+        "title": "任务",
+        "createLabel": "创建新 任务",
+        "createOrEditLabel": "创建或编辑 任务"
+      },
+      "created": "任务 {{ param }} 创建成功",
+      "updated": "任务 {{ param }} 更新成功",
+      "deleted": "任务 {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 任务 {{ id }} 吗？"
+      },
+      "submit": {
+        "question": "你确定要提交 任务 {{ id }} 吗？"
+      },
+      "cancel": {
+        "question": "你确定要取消 任务 {{ id }} 吗？",
+        "savepoint": "请输入savepoint的目录"
+      },
+      "rescale": "请输入任务新的并发数",
+      "savepoint": {
+        "question": "你确定要savepoint 任务 {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "任务"
+      },
+      "name": "名称",
+      "type": "类型",
+      "config": "配置",
+      "remark": "备注",
+      "clusterJobId": "关联的任务id",
+      "status": "状态",
+      "createdBy": "创建者",
+      "createdDate": "创建时间",
+      "lastModifiedBy": "修改者",
+      "lastModifiedDate": "修改时间",
+      "business": "业务",
+      "cluster": "集群",
+      "sql": "Sql"
+    }
+  }
+}

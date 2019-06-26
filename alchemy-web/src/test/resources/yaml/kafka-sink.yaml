@@ -1,0 +1,3 @@
+topic: stream_dest
+properties:
+    bootstrap.servers: localhost:9092

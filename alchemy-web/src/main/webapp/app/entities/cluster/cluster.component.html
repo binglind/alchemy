@@ -1,0 +1,74 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="alchemyApp.cluster.home.title">Clusters</span>
+    </h2>
+    <h2>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-cluster" [routerLink]="['/cluster', business.id , 'new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="alchemyApp.cluster.home.createLabel">
+            Create new Cluster
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="clusters">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="name"><span jhiTranslate="alchemyApp.cluster.name">Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="businessId"><span jhiTranslate="alchemyApp.cluster.business">Business</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="type"><span jhiTranslate="alchemyApp.cluster.type">Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="remark"><span jhiTranslate="alchemyApp.cluster.remark">Remark</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdBy"><span jhiTranslate="alchemyApp.cluster.createdBy">Created By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdDate"><span jhiTranslate="alchemyApp.cluster.createdDate">Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastModifiedBy"><span jhiTranslate="alchemyApp.cluster.lastModifiedBy">Last Modified By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastModifiedDate"><span jhiTranslate="alchemyApp.cluster.lastModifiedDate">Last Modified Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let cluster of clusters ;trackBy: trackId">
+                <td><a [routerLink]="['/cluster', cluster.id, 'view' ]">{{cluster.id}}</a></td>
+                <td>{{cluster.name}}</td>
+                <td>
+                    <div *ngIf="cluster.businessId">
+                        <a [routerLink]="['../business', cluster.businessId , 'view' ]" >{{cluster.businessId}}</a>
+                    </div>
+                </td>
+                <td jhiTranslate="{{'alchemyApp.ClusterType.' + cluster.type}}">{{cluster.type}}</td>
+                <td>{{cluster.remark}}</td>
+                <td>{{cluster.createdBy}}</td>
+                <td>{{cluster.createdDate | date:'medium'}}</td>
+                <td>{{cluster.lastModifiedBy}}</td>
+                <td>{{cluster.lastModifiedDate | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                (click)="detail(cluster.id)"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/cluster', cluster.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', 'cluster', { outlets: { popup: cluster.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

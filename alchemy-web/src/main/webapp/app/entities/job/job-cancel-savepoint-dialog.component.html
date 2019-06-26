@@ -1,0 +1,32 @@
+<form name="cancelForm" (ngSubmit)="confirmcancel(job.id)" role="form" novalidate [formGroup]="cancelForm">
+    <div class="modal-header">
+        <h4 class="modal-title" jhiTranslate="entity.cancel.title">Confirm cancel with savepoint operation</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" *ngIf="!savepointPath">
+            <label class="form-control-label" jhiTranslate="alchemyApp.job.cancel.savepoint" for="field_name">Savepoint</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   formControlName="savepointDirectory" />
+            <div *ngIf="cancelForm.get('savepointDirectory').invalid && (cancelForm.get('savepointDirectory').dirty || cancelForm.get('savepointDirectory').touched)">
+                <small class="form-text text-danger"
+                       *ngIf="cancelForm.get('savepointDirectory').errors.required" jhiTranslate="entity.validation.required">
+                    This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="savepointPath">
+            <h3 >savepointPath: {{savepointPath}}</h3>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button id="jhi-confirm-cancel-job" type="cancel" class="btn btn-danger">
+            <fa-icon [icon]="'times'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok">OK</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,62 @@
+{
+    "name": "Sink",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "SinkType",
+            "fieldValues": "REDIS,KAFKA,MYSQL,HBASE,TSDB,FILE,ELASTICSEARCH,PRINT",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "config",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+      {
+        "fieldName": "remark",
+        "fieldType": "String",
+        "fieldValidateRules": [
+          "required"
+        ]
+      },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "lastModifiedBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastModifiedDate",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "business",
+            "otherEntityName": "business",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20190603023717",
+    "entityTableName": "sink",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

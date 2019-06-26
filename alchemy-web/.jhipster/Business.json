@@ -1,0 +1,69 @@
+{
+    "name": "Business",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "unique"
+            ]
+        },
+        {
+            "fieldName": "remark",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "job",
+            "otherEntityRelationshipName": "business",
+            "relationshipName": "job"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "cluster",
+            "otherEntityRelationshipName": "business",
+            "relationshipName": "cluster"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "source",
+            "otherEntityRelationshipName": "business",
+            "relationshipName": "source"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "sink",
+            "otherEntityRelationshipName": "business",
+            "relationshipName": "sink"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "udf",
+            "otherEntityRelationshipName": "business",
+            "relationshipName": "udf"
+        }
+    ],
+    "changelogDate": "20190603023710",
+    "entityTableName": "business",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

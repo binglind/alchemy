@@ -1,0 +1,26 @@
+{
+  "alchemyApp": {
+    "jobSql": {
+      "home": {
+        "title": "Job Sqls",
+        "createLabel": "Create a new Job Sql",
+        "createOrEditLabel": "Create or edit a Job Sql"
+      },
+      "created": "A new Job Sql is created with identifier {{ param }}",
+      "updated": "A Job Sql is updated with identifier {{ param }}",
+      "deleted": "A Job Sql is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Job Sql {{ id }}?"
+      },
+      "detail": {
+        "title": "Job Sql"
+      },
+      "sql": "Sql",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "job": "Job"
+    }
+  }
+}

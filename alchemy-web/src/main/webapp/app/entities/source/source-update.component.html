@@ -1,0 +1,90 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-source-heading" jhiTranslate="alchemyApp.source.home.createOrEditLabel">Create or edit a Source</h2>
+            <jhi-alert-error></jhi-alert-error>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [hidden]="!source.id">
+                        <label for="id" jhiTranslate="global.field.id">ID</label>
+                        <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                               readonly />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.source.name" for="field_name">Name</label>
+                        <input type="text" class="form-control" name="name" id="field_name"
+                               formControlName="name"/>
+                        <div *ngIf="editForm.get('name').invalid && (editForm.get('name').dirty || editForm.get('name').touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="editForm.get('name').errors.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.source.tableType" for="field_tableType">Table Type</label>
+                        <select class="form-control" name="tableType" formControlName="tableType" id="field_tableType">
+                            <option value="TABLE">{{'alchemyApp.TableType.TABLE' | translate}}</option>
+                            <option value="VIEW">{{'alchemyApp.TableType.VIEW' | translate}}</option>
+                            <option value="SIDE">{{'alchemyApp.TableType.SIDE' | translate}}</option>
+                        </select>
+                        <div *ngIf="editForm.get('tableType').invalid && (editForm.get('tableType').dirty || editForm.get('tableType').touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="editForm.get('tableType').errors.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.source.sourceType" for="field_sourceType">Source Type</label>
+                        <select class="form-control" name="sourceType" formControlName="sourceType" id="field_sourceType">
+                            <option value="KAFKA010">{{'alchemyApp.SourceType.KAFKA010' | translate}}</option>
+                            <option value="MYSQL">{{'alchemyApp.SourceType.MYSQL' | translate}}</option>
+                            <option value="CSV">{{'alchemyApp.SourceType.CSV' | translate}}</option>
+                        </select>
+                        <div *ngIf="editForm.get('sourceType').invalid && (editForm.get('sourceType').dirty || editForm.get('sourceType').touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="editForm.get('sourceType').errors.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.udf.remark" for="field_remark">Remark</label>
+                        <input type="text" class="form-control" name="remark" id="field_remark"
+                               formControlName="remark"/>
+                        <div *ngIf="editForm.get('remark').invalid && (editForm.get('remark').dirty || editForm.get('remark').touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="editForm.get('remark').errors.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.source.config" for="field_config">Config</label>
+                        <codemirror formControlName="config" [config]="yamlConfig" id="field_config"></codemirror>
+                        <div *ngIf="editForm.get('config').invalid && (editForm.get('config').dirty || editForm.get('config').touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="editForm.get('config').errors.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <div class="col-md-2"></div>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+                <div class="col-md-3"></div>
+            </div>
+        </form>
+    </div>
+</div>

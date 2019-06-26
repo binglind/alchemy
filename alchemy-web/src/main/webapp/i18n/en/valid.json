@@ -1,0 +1,9 @@
+{
+  "alchemyApp": {
+    "Valid": {
+      "null": "",
+      "INVALID": "INVALID",
+      "VALID": "VALID"
+    }
+  }
+}

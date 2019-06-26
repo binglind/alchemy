@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="cluster">
+            <h2><span jhiTranslate="alchemyApp.cluster.detail.title">Cluster</span> {{cluster.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="alchemyApp.cluster.name">Name</span></dt>
+                <dd>
+                    <span>{{cluster.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.cluster.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'alchemyApp.ClusterType.' + cluster.type}}">{{cluster.type}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.cluster.config">Config</span></dt>
+                <dd>
+                    <span>{{cluster.config}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.cluster.remark">Remark</span></dt>
+                <dd>
+                    <span>{{cluster.remark}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.cluster.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{cluster.createdBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.cluster.createdDate">Created Date</span></dt>
+                <dd>
+                    <span>{{cluster.createdDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.cluster.lastModifiedBy">Last Modified By</span></dt>
+                <dd>
+                    <span>{{cluster.lastModifiedBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.cluster.lastModifiedDate">Last Modified Date</span></dt>
+                <dd>
+                    <span>{{cluster.lastModifiedDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.cluster.business">Business</span></dt>
+                <dd>
+                    <div *ngIf="cluster.businessId">
+                        <a [routerLink]="['/business', cluster.businessId, 'view']">{{cluster.businessId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/cluster', cluster.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

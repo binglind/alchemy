@@ -1,0 +1,26 @@
+{
+  "alchemyApp": {
+    "jobSql": {
+      "home": {
+        "title": "Sqls",
+        "createLabel": "创建新 Sql",
+        "createOrEditLabel": "创建或编辑 Job Sql"
+      },
+      "created": " Sql {{ param }} 创建成功",
+      "updated": " Sql {{ param }} 更新成功",
+      "deleted": " Sql {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Sql {{ id }} 吗？"
+      },
+      "detail": {
+        "title": " Sql"
+      },
+      "sql": "Sql",
+      "createdBy": "创建者",
+      "createdDate": "创建时间",
+      "lastModifiedBy": "修改者",
+      "lastModifiedDate": "修改时间",
+      "job": "任务"
+    }
+  }
+}

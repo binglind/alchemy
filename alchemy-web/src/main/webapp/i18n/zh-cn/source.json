@@ -1,0 +1,30 @@
+{
+  "alchemyApp": {
+    "source": {
+      "home": {
+        "title": "数据源",
+        "createLabel": "创建新 数据源",
+        "createOrEditLabel": "创建或编辑 数据源"
+      },
+      "created": "数据源 {{ param }} 创建成功",
+      "updated": "数据源 {{ param }} 更新成功",
+      "deleted": "数据源 {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 数据源 {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "数据源"
+      },
+      "name": "名称",
+      "tableType": "表类型",
+      "sourceType": "来源类型",
+      "config": "配置",
+      "remark": "备注",
+      "createdBy": "创建者",
+      "createdDate": "创建时间",
+      "lastModifiedBy": "修改者",
+      "lastModifiedDate": "修改时间",
+      "business": "业务"
+    }
+  }
+}

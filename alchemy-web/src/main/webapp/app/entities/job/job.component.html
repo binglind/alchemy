@@ -1,0 +1,143 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="alchemyApp.job.home.title">Jobs</span>
+    </h2>
+    <h2>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-job" [routerLink]="['/job', business.id ,'new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="alchemyApp.job.home.createLabel">
+            Create new Job
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="jobs">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="name"><span jhiTranslate="alchemyApp.job.name">Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="clusterId"><span jhiTranslate="alchemyApp.job.cluster">Cluster</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="type"><span jhiTranslate="alchemyApp.job.type">Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="remark"><span jhiTranslate="alchemyApp.job.remark">Remark</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="clusterJobId"><span jhiTranslate="alchemyApp.job.clusterJobId">Cluster Job Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="status"><span jhiTranslate="alchemyApp.job.status">Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdBy"><span jhiTranslate="alchemyApp.job.createdBy">Created By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="createdDate"><span jhiTranslate="alchemyApp.job.createdDate">Created Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastModifiedBy"><span jhiTranslate="alchemyApp.job.lastModifiedBy">Last Modified By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="lastModifiedDate"><span jhiTranslate="alchemyApp.job.lastModifiedDate">Last Modified Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let job of jobs ;trackBy: trackId">
+                <td><a [routerLink]="['/job', job.id, 'view' ]">{{job.id}}</a></td>
+                <td>{{job.name}}</td>
+                <td>
+                    <div *ngIf="job.clusterId">
+                        <a [routerLink]="['../cluster', job.clusterId , 'view' ]" >{{job.clusterId}}</a>
+                    </div>
+                </td>
+                <td jhiTranslate="{{'alchemyApp.JobType.' + job.type}}">{{job.type}}</td>
+                <td>{{job.remark}}</td>
+                <td>{{job.clusterJobId}}</td>
+                <td jhiTranslate="{{'alchemyApp.JobStatus.' + job.status}}">{{job.status}}</td>
+                <td>{{job.createdBy}}</td>
+                <td>{{job.createdDate | date:'medium'}}</td>
+                <td>{{job.lastModifiedBy}}</td>
+                <td>{{job.lastModifiedDate | date:'medium'}}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/job', job.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit" *ngIf="job.type == 'SQL'"
+                                [routerLink]="['/job-sql', job.id]"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.sql">Sql</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/job', job.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
+                            <ul class="navbar-nav ml-auto">
+                                <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
+                                <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                                    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="job-operator-menu">
+                                        <span>
+                                            <span jhiTranslate="global.menu.job.main">
+                                                操作
+                                            </span>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="job-operator-menu">
+                                        <li>
+                                            <a class="dropdown-item"  [routerLink]="['/', 'job', { outlets: { popup: job.id + '/submit'} }]" replaceUrl="true"
+                                               queryParamsHandling="merge"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                                                <span jhiTranslate="global.menu.job.submit">Submit</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"  [routerLink]="['/', 'job', { outlets: { popup: job.id + '/cancel'} }]" replaceUrl="true"
+                                               queryParamsHandling="merge"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                                                <span jhiTranslate="global.menu.job.cancel">Cancel</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"  [routerLink]="['/', 'job', { outlets: { popup: job.id + '/cancel-savepoint'} }]" replaceUrl="true"
+                                               queryParamsHandling="merge"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                                                <span jhiTranslate="global.menu.job.cancelWithSavepoint">CancelWithSavepoint</span>
+                                            </a>
+                                        </li>
+<!--                                        <li>-->
+<!--                                            <a class="dropdown-item"  [routerLink]="['/', 'job', { outlets: { popup: job.id + '/rescale'} }]" replaceUrl="true"-->
+<!--                                               queryParamsHandling="merge"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">-->
+<!--                                                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>-->
+<!--                                                <span jhiTranslate="global.menu.job.rescale">Rescale</span>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+                                        <li>
+                                            <a class="dropdown-item"  [routerLink]="['/', 'job', { outlets: { popup: job.id + '/savepoint'} }]" replaceUrl="true"
+                                               queryParamsHandling="merge"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                                                <span jhiTranslate="global.menu.job.triggerSavepoint">TriggerSavepoint</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" [routerLink]="['/', 'job', { outlets: { popup: job.id + '/delete'} }]" replaceUrl="true"
+                                               queryParamsHandling="merge"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                                                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                                                <span jhiTranslate="global.menu.job.delete">Delete</span>
+                                            </a>
+                                        </li>
+                                        <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="jobs && jobs.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

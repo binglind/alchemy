@@ -1,0 +1,19 @@
+name: bindTest
+camel-case: camelCase
+invalidCamelCase: invalidCamelCase   # 驼峰式必须转换成'-'
+map:
+    age: 20
+    height: 172
+    high-availability.cluster-id: daily
+    nest:
+        timestamps:
+            from: field
+list:
+    - 'one'
+    - 'two'
+array:
+    - 'one'
+    - 'two'
+checkpoint-config:
+    checkpoint-interval: 10000
+    checkpoint-timeout: 60000

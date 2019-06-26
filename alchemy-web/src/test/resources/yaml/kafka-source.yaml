@@ -1,0 +1,79 @@
+schema:
+    - name: syslog_host
+      type: VARCHAR
+    - name: syslog_tag
+      type: VARCHAR
+    - name: remote_addr
+      type: VARCHAR
+    - name: remote_user
+      type: VARCHAR
+    - name: procTime
+      type: TIMESTAMP
+      proctime: true
+    - name: rowTime
+      type: TIMESTAMP
+      rowtime:
+          timestamps:
+              type: "from-field"
+              from: "time_local"
+          watermarks:
+              type: "periodic-bounded"
+              delay: "1000"
+    - name: http_method
+      type: VARCHAR
+    - name: request
+      type: VARCHAR
+    - name: request_param
+      type: VARCHAR
+    - name: http_version
+      type: FLOAT
+    - name: status
+      type: INT
+    - name: body_bytes_sent
+      type: INT
+    - name: http_referer
+      type: VARCHAR
+    - name: user_agent
+      type: VARCHAR
+    - name: http_url
+      type: VARCHAR
+    - name: host_name
+      type: VARCHAR
+    - name: http_x_forwarded_for
+      type: VARCHAR
+    - name: request_time
+      type: FLOAT
+    - name: remote_port
+      type: VARCHAR
+    - name: upstream_response_time
+      type: VARCHAR
+    - name: http_x_readtime
+      type: VARCHAR
+    - name: uri
+      type: VARCHAR
+    - name: upstream_status
+      type: VARCHAR
+    - name: upstream_addr
+      type: VARCHAR
+    - name: nuid
+      type: VARCHAR
+    - name: request_id
+      type: VARCHAR
+    - name: http_x_forwarded_proto
+      type: VARCHAR
+    - name: message
+      type: VARCHAR
+
+connector:
+    startup-mode: earliest-offset
+    specific-offsets:
+        1: 1000  #only for test
+        2: 3000  #only for test
+    topic: app-log
+    properties:
+        bootstrap.servers: 127.0.0.1:9092
+        group.id: testGroup
+format:
+    type: grok
+    properties:
+        regular: \[%{DATA:syslog_host}\] \[%{DATA:syslog_tag}\] "%{IP:remote_addr}" "%{DATA:remote_user}" "\[%{HTTPDATE:time_local}\]" "%{WORD:http_method} %{URIPATH:request}(?:\?%{DATA:request_param}|) HTTP\/%{NUMBER:http_version:float}" "(?:%{NUMBER:status:integer}|-)" "(?:%{NUMBER:body_bytes_sent:integer}|-)" "%{DATA:http_referer}" "%{DATA:user_agent}" "%{WORD} %{DATA:http_url}" "%{DATA:host_name}" "%{DATA:http_x_forwarded_for}" "(?:%{NUMBER:request_time:float}|%{DATA})" "%{DATA:remote_port}" "(?:%{DATA:upstream_response_time}|-)" "%{DATA:http_x_readtime}" "(?:/%{DATA:uri}|%{DATA})" "%{DATA:upstream_status}" "%{DATA:upstream_addr}" "%{DATA:nuid}" "%{DATA:request_id}"

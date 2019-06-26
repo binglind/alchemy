@@ -1,0 +1,19 @@
+id;"name";"jhi_type";"jhi_value";"dependency";"created_by";"created_date";"last_modified_by";"last_modified_date";"remark";business_id
+1;"HashCode";"CODE";"import com.dfire.platform.alchemy.function.StreamScalarFunction;
+
+public class TestHashCode implements StreamScalarFunction<Integer> {
+
+    private int factor = 12;
+
+    @Override
+    public Integer invoke(Object... args) {
+      Object value =args[0];
+      if(value !=null ){
+         return args[0].hashCode() * factor;
+      }else{
+      	 return -1;
+      }
+    }
+}
+";NULL;"admin";"2019-06-13 03:22:00";"admin";"2019-06-19 09:30:58";"第一个测试自定义函数";1
+2;"SPLIT";"DEPENDENCY";"com.dfire.platform.alchemy.function.logstash.SplitFunction";"com.dfire.platform:alchemy-function-logstash:0.0.9";"admin";"2019-06-18 10:20:00";"admin";"2019-06-18 10:33:41";"将字符按照指定分隔符切分";1

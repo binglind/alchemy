@@ -1,0 +1,10 @@
+{
+  "alchemyApp": {
+    "TableType": {
+      "null": "",
+      "TABLE": "TABLE",
+      "VIEW": "VIEW",
+      "SIDE": "SIDE"
+    }
+  }
+}

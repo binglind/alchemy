@@ -1,0 +1,14 @@
+{
+  "alchemyApp": {
+    "JobStatus": {
+      "null": "",
+      "CREATE": "创建",
+      "UPDATE": "待更新",
+      "SUBMIT": "提交",
+      "RUNNING": "运行",
+      "FAILED": "失败",
+      "CANCELED": "取消",
+      "FINISHED": "完成"
+    }
+  }
+}

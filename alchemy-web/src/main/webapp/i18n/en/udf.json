@@ -1,0 +1,30 @@
+{
+  "alchemyApp": {
+    "udf": {
+      "home": {
+        "title": "Udfs",
+        "createLabel": "Create a new Udf",
+        "createOrEditLabel": "Create or edit a Udf"
+      },
+      "created": "A new Udf is created with identifier {{ param }}",
+      "updated": "A Udf is updated with identifier {{ param }}",
+      "deleted": "A Udf is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Udf {{ id }}?"
+      },
+      "detail": {
+        "title": "Udf"
+      },
+      "name": "Name",
+      "type": "Type",
+      "value": "Value",
+      "dependency": "Dependency",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "remark": "Remark",
+      "business": "Business"
+    }
+  }
+}

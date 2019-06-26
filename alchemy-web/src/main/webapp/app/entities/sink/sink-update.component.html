@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-sink-heading" jhiTranslate="alchemyApp.sink.home.createOrEditLabel">Create or edit a Sink</h2>
+            <jhi-alert-error></jhi-alert-error>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" [hidden]="!sink.id">
+                        <label for="id" jhiTranslate="global.field.id">ID</label>
+                        <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                               readonly />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.sink.name" for="field_name">Name</label>
+                        <input type="text" class="form-control" name="name" id="field_name"
+                               formControlName="name"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.sink.type" for="field_type">Type</label>
+                        <select class="form-control" name="type" formControlName="type" id="field_type">
+                            <option value="REDIS">{{'alchemyApp.SinkType.REDIS' | translate}}</option>
+                            <option value="KAFKA010">{{'alchemyApp.SinkType.KAFKA010' | translate}}</option>
+                            <option value="MYSQL">{{'alchemyApp.SinkType.MYSQL' | translate}}</option>
+                            <option value="HBASE">{{'alchemyApp.SinkType.HBASE' | translate}}</option>
+                            <option value="TSDB">{{'alchemyApp.SinkType.TSDB' | translate}}</option>
+                            <option value="FILE">{{'alchemyApp.SinkType.FILE' | translate}}</option>
+                            <option value="ELASTICSEARCH5">{{'alchemyApp.SinkType.ELASTICSEARCH5' | translate}}</option>
+                            <option value="DUBBO">{{'alchemyApp.SinkType.DUBBO' | translate}}</option>
+                        </select>
+                        <div *ngIf="editForm.get('type').invalid && (editForm.get('type').dirty || editForm.get('type').touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="editForm.get('type').errors.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.sink.remark" for="field_remark">Remark</label>
+                        <input type="text" class="form-control" name="remark" id="field_remark"
+                               formControlName="remark"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-control-label" jhiTranslate="alchemyApp.sink.config" for="field_config">Config</label>
+                        <codemirror formControlName="config" [config]="yamlConfig" id="field_config"></codemirror>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

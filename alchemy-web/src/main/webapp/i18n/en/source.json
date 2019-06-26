@@ -1,0 +1,30 @@
+{
+  "alchemyApp": {
+    "source": {
+      "home": {
+        "title": "Sources",
+        "createLabel": "Create a new Source",
+        "createOrEditLabel": "Create or edit a Source"
+      },
+      "created": "A new Source is created with identifier {{ param }}",
+      "updated": "A Source is updated with identifier {{ param }}",
+      "deleted": "A Source is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Source {{ id }}?"
+      },
+      "detail": {
+        "title": "Source"
+      },
+      "name": "Name",
+      "tableType": "Table Type",
+      "sourceType": "Source Type",
+      "config": "Config",
+      "remark": "Remark",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "business": "Business"
+    }
+  }
+}

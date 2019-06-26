@@ -1,0 +1,13 @@
+name: side_simple  #tableName
+schema:
+    - name: id
+      type: VARCHAR
+    - name: name
+      type: VARCHAR
+side:
+    async: true
+    cache-type: LRU
+connector:
+    url: jdbc:mysql://localhost:3306/flink_test?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456

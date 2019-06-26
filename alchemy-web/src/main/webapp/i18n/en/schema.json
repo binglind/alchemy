@@ -1,0 +1,28 @@
+{
+  "alchemyApp": {
+    "schema": {
+      "home": {
+        "title": "Schemata",
+        "createLabel": "Create a new Schema",
+        "createOrEditLabel": "Create or edit a Schema"
+      },
+      "created": "A new Schema is created with identifier {{ param }}",
+      "updated": "A Schema is updated with identifier {{ param }}",
+      "deleted": "A Schema is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Schema {{ id }}?"
+      },
+      "detail": {
+        "title": "Schema"
+      },
+      "columnName": "Column Name",
+      "columnType": "Column Type",
+      "config": "Config",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "source": "Source"
+    }
+  }
+}

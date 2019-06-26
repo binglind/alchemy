@@ -1,0 +1,29 @@
+{
+  "alchemyApp": {
+    "sink": {
+      "home": {
+        "title": "数据写入端",
+        "createLabel": "创建新 数据写入端",
+        "createOrEditLabel": "创建或编辑 数据写入端"
+      },
+      "created": "数据写入端 {{ param }} 创建成功",
+      "updated": "数据写入端 {{ param }} 更新成功",
+      "deleted": "数据写入端 {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 数据写入端 {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "数据写入端"
+      },
+      "name": "名称",
+      "type": "类型",
+      "config": "配置",
+      "remark": "备注",
+      "createdBy": "创建者",
+      "createdDate": "创建时间",
+      "lastModifiedBy": "修改者",
+      "lastModifiedDate": "修改时间",
+      "business": "业务"
+    }
+  }
+}

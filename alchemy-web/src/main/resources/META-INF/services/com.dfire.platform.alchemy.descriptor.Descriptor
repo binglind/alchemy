@@ -1,0 +1,16 @@
+com.dfire.platform.alchemy.descriptor.EsSinkDescriptor
+com.dfire.platform.alchemy.descriptor.FormatDescriptor
+com.dfire.platform.alchemy.descriptor.HbaseSinkDescriptor
+com.dfire.platform.alchemy.descriptor.KafkaConnectorDescriptor
+com.dfire.platform.alchemy.descriptor.KafkaSinkDescriptor
+com.dfire.platform.alchemy.descriptor.RedisSinkDescriptor
+com.dfire.platform.alchemy.descriptor.SourceDescriptor
+com.dfire.platform.alchemy.descriptor.TableDescriptor
+com.dfire.platform.alchemy.descriptor.TsdbSinkDescriptor
+com.dfire.platform.alchemy.descriptor.UdfDescriptor
+com.dfire.platform.alchemy.descriptor.MysqlConnectorDescriptor
+com.dfire.platform.alchemy.descriptor.MysqlSinkDescriptor
+com.dfire.platform.alchemy.descriptor.PrintSinkDescriptor
+com.dfire.platform.alchemy.descriptor.CsvConnectorDescriptor
+com.dfire.platform.alchemy.descriptor.FileSystemSinkDescriptor
+com.dfire.platform.alchemy.descriptor.DubboSinkDescriptor

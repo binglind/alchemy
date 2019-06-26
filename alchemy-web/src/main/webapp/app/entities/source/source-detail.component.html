@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="source">
+            <h2><span jhiTranslate="alchemyApp.source.detail.title">Source</span> {{source.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="alchemyApp.source.name">Name</span></dt>
+                <dd>
+                    <span>{{source.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.tableType">Table Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'alchemyApp.TableType.' + source.tableType}}">{{source.tableType}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.sourceType">Source Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'alchemyApp.SourceType.' + source.sourceType}}">{{source.sourceType}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.config">Config</span></dt>
+                <dd>
+                    <span>{{source.config}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.remark">Remark</span></dt>
+                <dd>
+                    <span>{{source.remark}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{source.createdBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.createdDate">Created Date</span></dt>
+                <dd>
+                    <span>{{source.createdDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.lastModifiedBy">Last Modified By</span></dt>
+                <dd>
+                    <span>{{source.lastModifiedBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.lastModifiedDate">Last Modified Date</span></dt>
+                <dd>
+                    <span>{{source.lastModifiedDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.source.business">Business</span></dt>
+                <dd>
+                    <div *ngIf="source.businessId">
+                        <a [routerLink]="['/business', source.businessId, 'view']">{{source.businessId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/source', source.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

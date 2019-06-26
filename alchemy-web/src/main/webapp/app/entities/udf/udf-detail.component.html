@@ -1,0 +1,67 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="udf">
+            <h2><span jhiTranslate="alchemyApp.udf.detail.title">Udf</span> {{udf.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="alchemyApp.udf.name">Name</span></dt>
+                <dd>
+                    <span>{{udf.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.udf.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'alchemyApp.UdfType.' + udf.type}}">{{udf.type}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.udf.value">Value</span></dt>
+                <dd>
+                    <span>{{udf.value}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.udf.dependency">Dependency</span></dt>
+                <dd>
+                    <span>{{udf.dependency}}</span>
+                </dd>
+                <dt>
+                    <span jhiTranslate="alchemyApp.udf.remark">Remark</span>
+                </dt>
+                <dd>
+                    <span>{{udf.remark}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.udf.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{udf.createdBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.udf.createdDate">Created Date</span></dt>
+                <dd>
+                    <span>{{udf.createdDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.udf.lastModifiedBy">Last Modified By</span></dt>
+                <dd>
+                    <span>{{udf.lastModifiedBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.udf.lastModifiedDate">Last Modified Date</span></dt>
+                <dd>
+                    <span>{{udf.lastModifiedDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.udf.business">Business</span></dt>
+                <dd>
+                    <div *ngIf="udf.businessId">
+                        <a [routerLink]="['/business', udf.businessId, 'view']">{{udf.businessId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/udf', udf.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

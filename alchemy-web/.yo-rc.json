@@ -1,0 +1,52 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.dfire.platform.alchemy",
+      "nativeLanguage": "zh-cn"
+    },
+    "jhipsterVersion": "6.0.1",
+    "applicationType": "monolith",
+    "baseName": "alchemy",
+    "packageName": "com.dfire.platform.alchemy",
+    "packageFolder": "com/dfire/platform/alchemy",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": false,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NjhiMjdiYmU1OWU2NzdkZmVmMjg5YmE4MDkwNDI2ZTBkZmQ4OTdjNDMwZTkxYzQ2Zjk4YTg1MDM3NWE4MWJhMmQ5MDcyZWQ4NjM5NjBhMzBkMmY0MzczMzNjYjkxOTY1YTJlMDcwYTZjYjc1NzQ0NjhjNDM5OTc2MDI0NzA2YzE=",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [
+      {
+        "name": "generator-codegen",
+        "version": "0.2.1"
+      },
+      {
+        "name": "generator-jhipster-nav-element",
+        "version": "2.1.5"
+      }
+    ],
+    "enableTranslation": true,
+    "nativeLanguage": "zh-cn",
+    "languages": [
+      "zh-cn",
+      "en"
+    ]
+  }
+}

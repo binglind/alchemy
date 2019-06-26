@@ -1,0 +1,10 @@
+{
+  "alchemyApp": {
+    "SourceType": {
+      "null": "",
+      "KAFKA010": "KAFKA010",
+      "MYSQL": "MYSQL",
+      "CSV": "CSV"
+    }
+  }
+}

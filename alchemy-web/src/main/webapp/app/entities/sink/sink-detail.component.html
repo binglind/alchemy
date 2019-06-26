@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sink">
+            <h2><span jhiTranslate="alchemyApp.sink.detail.title">Sink</span> {{sink.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="alchemyApp.sink.name">Name</span></dt>
+                <dd>
+                    <span>{{sink.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.sink.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'alchemyApp.SinkType.' + sink.type}}">{{sink.type}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.sink.config">Config</span></dt>
+                <dd>
+                    <span>{{sink.config}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.sink.remark">Remark</span></dt>
+                <dd>
+                    <span>{{sink.remark}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.sink.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{sink.createdBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.sink.createdDate">Created Date</span></dt>
+                <dd>
+                    <span>{{sink.createdDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.sink.lastModifiedBy">Last Modified By</span></dt>
+                <dd>
+                    <span>{{sink.lastModifiedBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.sink.lastModifiedDate">Last Modified Date</span></dt>
+                <dd>
+                    <span>{{sink.lastModifiedDate}}</span>
+                </dd>
+                <dt><span jhiTranslate="alchemyApp.sink.business">Business</span></dt>
+                <dd>
+                    <div *ngIf="sink.businessId">
+                        <a [routerLink]="['/business', sink.businessId, 'view']">{{sink.businessId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sink', sink.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+{
+  "alchemyApp": {
+    "cluster": {
+      "home": {
+        "title": "集群",
+        "createLabel": "创建新 集群",
+        "createOrEditLabel": "创建或编辑 集群"
+      },
+      "created": "集群 {{ param }} 创建成功",
+      "updated": "集群 {{ param }} 更新成功",
+      "deleted": "集群 {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 集群 {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "集群"
+      },
+      "name": "名称",
+      "type": "类型",
+      "config": "配置",
+      "remark": "备注",
+      "createdBy": "创建者",
+      "createdDate": "创建时间",
+      "lastModifiedBy": "修改者",
+      "lastModifiedDate": "修改时间",
+      "business": "业务",
+      "job": "任务"
+    }
+  }
+}

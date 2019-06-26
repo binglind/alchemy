@@ -1,0 +1,28 @@
+{
+  "alchemyApp": {
+    "schema": {
+      "home": {
+        "title": "Schemata",
+        "createLabel": "创建新 Schema",
+        "createOrEditLabel": "创建或编辑 Schema"
+      },
+      "created": "Schema {{ param }} 创建成功",
+      "updated": "Schema {{ param }} 更新成功",
+      "deleted": "Schema {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Schema {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "Schema"
+      },
+      "columnName": "Column Name",
+      "columnType": "Column Type",
+      "config": "Config",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
+      "source": "Source"
+    }
+  }
+}

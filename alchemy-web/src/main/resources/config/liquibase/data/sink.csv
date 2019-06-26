@@ -1,0 +1,76 @@
+id;"name";"jhi_type";"config";"remark";"created_by";"created_date";"last_modified_by";"last_modified_date";business_id
+1;"kafka_sink";"KAFKA010";"topic: stream_dest
+properties:
+  bootstrap.servers: localhost:9092";"测试写入kafka";"admin";"2019-06-13 03:23:00";"admin";"2019-06-13 03:27:42";1
+2;"redis_sink";"REDIS";"sentinel:
+  sentinels: localhost:26379
+  master: cache101
+database: 2
+keys:
+- first
+command: set
+members:
+- first
+scores:
+- score
+ttl: 180
+";"测试写入redis";"admin";"2019-06-13 03:24:11";"admin";"2019-06-13 03:24:11";1
+3;"mysql_sink";"MYSQL";"driver-name: com.zaxxer.hikari.HikariDataSource
+url: jdbc:mysql://localhost:3306/flink_test?useUnicode=true&characterEncoding=utf8&useSSL=false
+username: root
+password: 123456
+query: insert into insert_test (id,first,last,score) values (?,?,?,?)
+parameter-types:
+- 'INT'
+- 'VARCHAR'
+- 'VARCHAR'
+- 'DOUBLE'";"测试写入mysql";"admin";"2019-06-13 03:24:47";"admin";"2019-06-13 03:24:47";1
+4;"hbase_sink";"HBASE";"  row-keys:
+  - id
+  buffer-size: 1048576 # byte
+  family: s
+  family-columns:    #单个family 不需要配置这个参数，测试用
+    s1:
+    - first
+    - id
+    s2:
+    - last
+    - score
+  node: /hbase-unsecure
+  table-name: flink-test
+  zookeeper: localhost:2181";"测试写入hbase";"admin";"2019-06-13 03:26:04";"admin";"2019-06-13 03:26:04";1
+5;"tsdb_sink";"TSDB";"  url: http://localhost:4242
+  metrics:
+  - score
+  tags:
+  - first
+  - last";"测试写入tsdb";"admin";"2019-06-13 03:27:07";"admin";"2019-06-13 03:27:07";1
+6;"es_sink";"ELASTICSEARCH5";"transports: localhost:9300
+cluster-name: daily
+index: flink-test
+config:
+  bulk.flush.max.actions: 2
+
+";"测试写入elasticsearch";"admin";"2019-06-13 03:31:22";"admin";"2019-06-13 03:31:22";1
+7;"file_sink";"FILE";"base-path: /tmp
+batch-size: 1073741824
+part-prefix: ''
+part-suffix: ''";"测试写入file";"admin";"2019-06-13 03:32:00";"admin";"2019-06-19 09:32:44";1
+8;"dubbo_sink";"DUBBO";"unique-name: test
+application-name: test_application
+interface-name: com.alibaba.dubbo.demo.AlchemyService
+method-name: invoke
+version: 1.0.0
+registry-addr: zookeeper://localhost:2181
+properties:
+   generic: true
+   cluster: broadcast
+";"测试写入dubbo";"admin";"2019-06-18 02:15:00";"admin";"2019-06-18 05:09:44";1
+9;"file_2";"FILE";"base-path: /tmp
+batch-size: 1048576
+part-prefix: ''
+part-suffix: ''";"分页测试";"admin";"2019-06-18 05:47:20";"admin";"2019-06-18 05:47:20";1
+10;"file_3";"FILE";"base-path: /tmp
+batch-size: 1048576
+part-prefix: ''
+part-suffix: ''";"分页 测试";"admin";"2019-06-18 05:47:39";"admin";"2019-06-18 05:47:39";1
