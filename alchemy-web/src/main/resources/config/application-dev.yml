@@ -37,7 +37,7 @@ spring:
       indent-output: true
     datasource:
       type: com.zaxxer.hikari.HikariDataSource
-      url: jdbc:h2:file:./alchemy-web/target/h2db/db/alchemy;DB_CLOSE_DELAY=-1
+      url: jdbc:h2:mem:alchemy;MODE=MYSQL;DB_CLOSE_DELAY=-1
       username: alchemy
       password:
       hikari:
