@@ -7,5 +7,3 @@ restart-params:
 checkpoint-config:
     checkpoint-timeout: 900000
     checkpoint-interval: 10000
-dependencies:
-    - file:///Users/dongbinglin/soft/apache-maven-3.3.9/respository/io/opentracing/opentracing-api/0.30.0/opentracing-api-0.30.0.jar

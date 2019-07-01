@@ -2,10 +2,14 @@ package com.dfire.platform.alchemy.descriptor;
 
 import com.dfire.platform.alchemy.common.Constants;
 import com.dfire.platform.alchemy.util.PropertiesUtil;
-import org.apache.flink.streaming.connectors.kafka.Kafka010JsonTableSink;
+import org.apache.flink.api.java.typeutils.RowTypeInfo;
+import org.apache.flink.formats.json.JsonRowSerializationSchema;
+import org.apache.flink.streaming.connectors.kafka.Kafka010TableSink;
+import org.apache.flink.table.api.TableSchema;
 import org.springframework.util.Assert;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author congbai
@@ -45,8 +49,21 @@ public class KafkaSinkDescriptor extends SinkDescriptor {
     }
 
     @Override
+    public <T> T transform(TableSchema param) throws Exception {
+        if(param == null){
+            throw new IllegalArgumentException("TableSchema must be not null");
+        }
+        return (T) new Kafka010TableSink(
+            param,
+            this.topic,
+            PropertiesUtil.fromYamlMap(this.getProperties()),
+            Optional.empty(),
+            new JsonRowSerializationSchema(new RowTypeInfo(param.getFieldTypes(), param.getFieldNames())));
+    }
+
+    @Override
     public <T> T transform() throws Exception {
-        return (T)new Kafka010JsonTableSink(this.topic, PropertiesUtil.fromYamlMap(this.getProperties()));
+        throw new UnsupportedOperationException();
     }
 
     @Override

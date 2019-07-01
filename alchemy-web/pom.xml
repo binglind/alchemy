@@ -142,9 +142,8 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.dfire.platform</groupId>
-            <artifactId>alchemy-formats-json</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-json</artifactId>
         </dependency>
         <dependency>
             <groupId>com.dfire.platform</groupId>
@@ -154,11 +153,6 @@
         <dependency>
             <groupId>com.dfire.platform</groupId>
             <artifactId>alchemy-connectors-hbase</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dfire.platform</groupId>
-            <artifactId>alchemy-connectors-kafka-0.10</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
@@ -210,11 +204,15 @@
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-table_${scala.binary.version}</artifactId>
+            <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-sql-client</artifactId>
+            <artifactId>flink-connector-kafka-0.10_${scala.binary.version}</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-sql-client_${scala.binary.version}</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>

@@ -3,7 +3,7 @@ package com.dfire.platform.alchemy.descriptor;
 import com.dfire.platform.alchemy.common.Constants;
 import com.dfire.platform.alchemy.connectors.elasticsearch.ElasticsearchProperties;
 import com.dfire.platform.alchemy.connectors.elasticsearch.ElasticsearchTableSink;
-import org.apache.flink.table.shaded.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 

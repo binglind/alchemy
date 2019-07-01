@@ -4,11 +4,10 @@ import com.dfire.platform.alchemy.client.loader.JarLoader;
 import com.dfire.platform.alchemy.domain.Cluster;
 import com.dfire.platform.alchemy.domain.enumeration.ClusterType;
 import com.dfire.platform.alchemy.util.BindPropertiesUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.flink.client.program.StandaloneClusterClient;
+import org.apache.flink.client.program.rest.RestClusterClient;
 import org.apache.flink.configuration.Configuration;
-import org.apache.flink.configuration.HighAvailabilityOptions;
 import org.apache.flink.configuration.JobManagerOptions;
+import org.apache.flink.configuration.RestOptions;
 
 /**
  * @author congbai
@@ -31,30 +30,34 @@ public class ClusterClientFactory {
 
     public static FlinkClient createRestClient(StandaloneClusterInfo clusterInfo, JarLoader jarLoader) throws Exception {
         Configuration configuration = new Configuration();
-        configuration.setString(HighAvailabilityOptions.HA_MODE, clusterInfo.getMode());
-        if (StringUtils.isNotEmpty(clusterInfo.getClusterId())){
-            configuration.setString(HighAvailabilityOptions.HA_CLUSTER_ID, clusterInfo.getClusterId());
+        if(clusterInfo.getProperties() != null){
+            clusterInfo.getProperties().entrySet().forEach(property ->{
+                Object value = property.getValue();
+                if(value instanceof String) {
+                    configuration.setString(property.getKey(), value.toString());
+                }else if(value instanceof Boolean){
+                    configuration.setBoolean(property.getKey(), (Boolean) value);
+                }else if(value instanceof Long){
+                    configuration.setLong(property.getKey(), (Long) value);
+                }else if(value instanceof Float){
+                    configuration.setFloat(property.getKey(), (Float) value);
+                }else if(value instanceof Integer){
+                    configuration.setInteger(property.getKey(), (Integer) value);
+                }else if(value instanceof Double){
+                    configuration.setDouble(property.getKey(), (Double) value);
+                }else{
+                    configuration.setString(property.getKey(), value.toString());
+                }
+            });
         }
-        if (StringUtils.isNotEmpty(clusterInfo.getZookeeperQuorum())){
-            configuration.setString(HighAvailabilityOptions.HA_ZOOKEEPER_QUORUM, clusterInfo.getZookeeperQuorum());
-        }
-        if (StringUtils.isNotEmpty(clusterInfo.getStoragePath())){
-            configuration.setString(HighAvailabilityOptions.HA_STORAGE_PATH, clusterInfo.getStoragePath());
-        }
-        if (StringUtils.isNotEmpty(clusterInfo.getAddress())){
-            configuration.setString(JobManagerOptions.ADDRESS, clusterInfo.getAddress());
-        }
-        if (StringUtils.isNotEmpty(clusterInfo.getLookupTimeout())){
-            configuration.setString(JobManagerOptions.ADDRESS, clusterInfo.getAddress());
-        }
-        if (clusterInfo.getPort() != null){
-            configuration.setInteger(JobManagerOptions.PORT, clusterInfo.getPort());
-        }
+        configuration.setString(JobManagerOptions.ADDRESS, clusterInfo.getAddress());
+        configuration.setInteger(JobManagerOptions.PORT, clusterInfo.getPort());
+        configuration.setInteger(RestOptions.PORT, clusterInfo.getPort());
         try {
-            StandaloneClusterClient clusterClient = new StandaloneClusterClient(configuration);
-            clusterClient.setPrintStatusDuringExecution(true);
-            clusterClient.setDetached(true);
-            return new StandaloneClusterFlinkClient(clusterClient, jarLoader,  clusterInfo.getDependencies(), clusterInfo.getWebInterfaceUrl());
+            RestClusterClient restClient =  new RestClusterClient<>(configuration, "RemoteExecutor");
+            restClient.setPrintStatusDuringExecution(true);
+            restClient.setDetached(true);
+            return new StandaloneClusterFlinkClient(restClient, jarLoader,  clusterInfo.getDependencies(), clusterInfo.getWebInterfaceUrl());
         } catch (Exception e) {
             throw new RuntimeException("Cannot establish connection to JobManager: " + e.getMessage(), e);
         }

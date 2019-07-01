@@ -14,7 +14,7 @@
 package com.dfire.platform.alchemy.api.function;
 
 
-import com.dfire.platform.alchemy.api.function.table.Collect;
+import org.apache.flink.table.functions.TableFunction;
 
 /**
  * Base class for a user-defined table function (UDTF) in Stream. A user-defined table functions works on zero, one, or
@@ -50,22 +50,8 @@ import com.dfire.platform.alchemy.api.function.table.Collect;
  *
  * @tparam T The type of the output row
  */
-public abstract class StreamTableFunction<T> implements Collect<T>, Function {
+public abstract class StreamTableFunction<T> extends TableFunction<T> implements Function {
 
-    private Collect<T> collect;
+    public abstract void invoke(T... args);
 
-    public abstract void invoke(Object... args);
-
-    @Override
-    public void collect(T row) {
-        this.collect.collect(row);
-    }
-
-    public Collect<T> getCollect() {
-        return collect;
-    }
-
-    public void setCollect(Collect<T> collect) {
-        this.collect = collect;
-    }
 }

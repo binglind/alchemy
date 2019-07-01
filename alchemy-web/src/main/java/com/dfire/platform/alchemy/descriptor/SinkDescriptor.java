@@ -2,12 +2,13 @@ package com.dfire.platform.alchemy.descriptor;
 
 import com.dfire.platform.alchemy.domain.Sink;
 import com.dfire.platform.alchemy.util.BindPropertiesUtil;
+import org.apache.flink.table.api.TableSchema;
 
 /**
  * @author congbai
  * @date 03/06/2018
  */
-public abstract class SinkDescriptor implements CoreDescriptor {
+public abstract class SinkDescriptor implements CoreDescriptor<TableSchema> {
 
     public static SinkDescriptor from(Sink sink) throws Exception {
         SinkDescriptor descriptor

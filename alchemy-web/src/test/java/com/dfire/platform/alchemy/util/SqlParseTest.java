@@ -33,11 +33,4 @@ public class SqlParseTest {
         assertThat(querySqls.get(0)).startsWith("SELECT");
         assertThat(querySqls.get(1)).startsWith("SELECT");
     }
-
-
-    public static void main(String[] args) throws SqlParseException {
-        String sql ="insert into satellite_es_sink select k.*, DATE_FORMAT(ss, '%Y.%d.%M') as ff , CONCAT('satellite-collector-', k.appKey , '-') as index from kafka_satellite k where FIND_APPKEY(k.properties) IS NOT NULL";
-        SqlParser sqlParser = SqlParser.create(sql, CONFIG);
-        SqlNode sqlNode = sqlParser.parseStmt();
-    }
 }

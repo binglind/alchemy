@@ -3,6 +3,7 @@ package com.dfire.platform.alchemy.descriptor;
 import com.dfire.platform.alchemy.api.common.Side;
 import com.dfire.platform.alchemy.common.Constants;
 import com.dfire.platform.alchemy.common.Field;
+import com.dfire.platform.alchemy.connectors.common.side.SideTable;
 import com.dfire.platform.alchemy.domain.Source;
 import com.dfire.platform.alchemy.domain.enumeration.SourceType;
 import com.dfire.platform.alchemy.domain.enumeration.TableType;
@@ -16,7 +17,7 @@ import java.util.Map;
  * @author congbai
  * @date 02/06/2018
  */
-public class SourceDescriptor implements CoreDescriptor {
+public class SourceDescriptor implements CoreDescriptor<SideTable> {
 
     private String name;
 
@@ -73,11 +74,17 @@ public class SourceDescriptor implements CoreDescriptor {
 
     @Override
     public <T> T transform() throws Exception {
-        return transform(null);
+        if (this.schema == null) {
+            throw new IllegalArgumentException("table schema is null");
+        }
+        if (this.getConnectorDescriptor() != null) {
+            return this.getConnectorDescriptor().buildSource(this.schema, this.format);
+        }
+        return null;
     }
 
     @Override
-    public <T, R> T transform(R param) throws Exception {
+    public <T> T transform(SideTable param) throws Exception {
         if (this.schema == null) {
             throw new IllegalArgumentException("table schema is null");
         }

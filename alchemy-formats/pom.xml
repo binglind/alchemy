@@ -16,6 +16,5 @@
         <module>alchemy-formats-grok</module>
         <module>alchemy-formats-hessian</module>
         <module>alchemy-formats-protostuff</module>
-        <module>alchemy-formats-json</module>
     </modules>
 </project>

@@ -72,7 +72,7 @@ public class SideStream {
         sideTable.setConditions(equalFields);
         sideTable.setSide(side);
         sideTable.setJoinType(joinType);
-        sideTable.setRowSize(leftSchema.getColumnCount() + sideType.getArity());
+        sideTable.setRowSize(leftSchema.getFieldCount() + sideType.getArity());
         sideTable.setSideAlias(sideAlias);
         sideTable.setSideType(sideType);
         sideTable.setSql(rightSelect.toString());

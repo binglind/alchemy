@@ -13,11 +13,10 @@
 
 package com.dfire.platform.alchemy.api.util;
 
+import groovy.lang.GroovyClassLoader;
+
 import java.io.File;
 import java.io.IOException;
-
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyObject;
 
 /**
  * @author congbai

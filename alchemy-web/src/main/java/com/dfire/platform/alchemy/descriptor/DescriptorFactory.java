@@ -1,6 +1,6 @@
 package com.dfire.platform.alchemy.descriptor;
 
-import org.apache.flink.table.shaded.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;

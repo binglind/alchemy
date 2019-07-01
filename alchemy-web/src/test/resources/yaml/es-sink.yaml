@@ -1,7 +1,7 @@
 cluster-name: daily
 transports: localhost:9300
 index: flink-test
-#index-field: first
+index-field: first
 failure-handler: IGNORE
 config:
     bulk.flush.max.actions: 100

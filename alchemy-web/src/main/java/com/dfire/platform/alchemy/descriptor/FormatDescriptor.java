@@ -16,7 +16,7 @@ import java.util.Map;
  * @author congbai
  * @date 2018/6/30
  */
-public class FormatDescriptor implements CoreDescriptor {
+public class FormatDescriptor implements CoreDescriptor<TypeInformation> {
 
     public static final String KEY_CLASS_NAME = "className";
 
@@ -69,7 +69,7 @@ public class FormatDescriptor implements CoreDescriptor {
     }
 
     @Override
-    public <T, R> T transform(R param) throws Exception {
+    public <T> T transform(TypeInformation param) throws Exception {
         if (param == null || !(param instanceof TypeInformation)) {
             throw new IllegalArgumentException("format param is invalid");
         }

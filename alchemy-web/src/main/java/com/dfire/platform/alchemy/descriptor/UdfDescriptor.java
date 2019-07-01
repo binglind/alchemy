@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
  * @author congbai
  * @date 01/06/2018
  */
-public class UdfDescriptor implements CoreDescriptor {
+public class UdfDescriptor<R> implements CoreDescriptor<R> {
 
     private String name;
 
@@ -71,11 +71,6 @@ public class UdfDescriptor implements CoreDescriptor {
 
     @Override
     public <T> T transform() throws Exception {
-      return transform(null);
-    }
-
-    @Override
-    public <T, R> T transform(R param) throws Exception {
         Class clazz;
         if (UdfType.CODE == udfType) {
             clazz = GroovyCompiler.compile(this.getValue(), this.getName());
@@ -107,6 +102,7 @@ public class UdfDescriptor implements CoreDescriptor {
             throw new IllegalArgumentException("Invalid UDF " + this.getName(), ex);
         }
     }
+
 
     @Override
     public String type() {

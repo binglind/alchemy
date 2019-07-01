@@ -1,19 +1,18 @@
 package com.dfire.platform.alchemy.api.function.table;
 
+import com.dfire.platform.alchemy.api.function.StreamTableFunction;
+import com.dfire.platform.alchemy.api.util.GroovyCompiler;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.table.functions.FunctionContext;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.util.Preconditions;
 
-import com.dfire.platform.alchemy.api.function.StreamTableFunction;
-import com.dfire.platform.alchemy.api.util.GroovyCompiler;
-
 /**
  * @author congbai
  * @date 31/05/2018
  */
-public class FlinkAllTableFunction extends TableFunction implements ResultTypeQueryable, Collect {
+public class FlinkAllTableFunction extends TableFunction implements ResultTypeQueryable {
 
     private final String code;
 
@@ -42,7 +41,6 @@ public class FlinkAllTableFunction extends TableFunction implements ResultTypeQu
             Class<StreamTableFunction> clazz = GroovyCompiler.compile(code, name);
             this.streamTableFunction = clazz.newInstance();
         }
-        this.streamTableFunction.setCollect(this);
         super.open(context);
     }
 

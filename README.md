@@ -8,7 +8,7 @@
 #### 环境
 - Java 8
 - Maven3.x
-- Flink 1.5
+- Flink 1.8.0  （table和hadoop依赖放入lib目录下）
 - node.js (可选，开发前端需要)
 
 #### 快速运行

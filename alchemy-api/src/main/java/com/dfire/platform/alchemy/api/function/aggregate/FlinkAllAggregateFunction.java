@@ -1,13 +1,12 @@
 package com.dfire.platform.alchemy.api.function.aggregate;
 
+import com.dfire.platform.alchemy.api.function.StreamAggregateFunction;
+import com.dfire.platform.alchemy.api.util.GroovyCompiler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.table.functions.AggregateFunction;
 import org.apache.flink.util.Preconditions;
-
-import com.dfire.platform.alchemy.api.function.StreamAggregateFunction;
-import com.dfire.platform.alchemy.api.util.GroovyCompiler;
 
 /**
  * @author congbai

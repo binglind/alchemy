@@ -15,7 +15,7 @@ public class SqlRequestTest {
     public void bind() throws Exception {
         File file = ResourceUtils.getFile("classpath:yaml/sql.yaml");
         SqlSubmitFlinkRequest flinkRequest = BindPropertiesUtil.bindProperties(file, SqlSubmitFlinkRequest.class);
-        assertThat(flinkRequest.getParallelism()).isEqualTo(2);
+        assertThat(flinkRequest.getParallelism()).isEqualTo(1);
         assertThat(flinkRequest.getRestartStrategies()).isNotNull();
         assertThat(flinkRequest.getTimeCharacteristic()).isNotNull();
         assertThat(flinkRequest.getRestartParams().get("restartAttempts")).isEqualTo(10);

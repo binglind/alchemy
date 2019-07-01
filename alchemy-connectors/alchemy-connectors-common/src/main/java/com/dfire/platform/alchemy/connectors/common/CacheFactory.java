@@ -2,7 +2,7 @@ package com.dfire.platform.alchemy.connectors.common;
 
 import com.dfire.platform.alchemy.api.common.CacheType;
 import com.dfire.platform.alchemy.api.common.Side;
-import org.apache.flink.table.shaded.org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**

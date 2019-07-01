@@ -6,8 +6,11 @@ import com.dfire.platform.alchemy.connectors.hbase.HbaseTableSink;
 import com.dfire.platform.alchemy.connectors.redis.RedisTableSink;
 import com.dfire.platform.alchemy.connectors.tsdb.TsdbTableSink;
 import com.dfire.platform.alchemy.util.BindPropertiesUtil;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.io.jdbc.JDBCAppendTableSink;
-import org.apache.flink.streaming.connectors.kafka.Kafka010JsonTableSink;
+import org.apache.flink.streaming.connectors.kafka.KafkaTableSinkBase;
+import org.apache.flink.table.api.TableSchema;
+import org.apache.flink.table.api.Types;
 import org.junit.Test;
 import org.springframework.util.ResourceUtils;
 
@@ -23,7 +26,7 @@ public class SinkDescriptorTest {
         KafkaSinkDescriptor sinkDescriptor = BindPropertiesUtil.bindProperties(file, KafkaSinkDescriptor.class);
         assertThat(sinkDescriptor.getTopic()).isEqualTo("stream_dest");
         assertThat(sinkDescriptor.getProperties().get("bootstrap.servers")).isEqualTo("localhost:9092");
-        Kafka010JsonTableSink tableSink = sinkDescriptor.transform();
+        KafkaTableSinkBase tableSink = sinkDescriptor.transform(new TableSchema(new String[]{"test"}, new TypeInformation[]{Types.STRING()}));
         assertThat(tableSink).isNotNull();
     }
 
@@ -35,7 +38,7 @@ public class SinkDescriptorTest {
         assertThat(sinkDescriptor.getDatabase()).isEqualTo(2);
         assertThat(sinkDescriptor.getHost()).isEqualTo("localhost");
         assertThat(sinkDescriptor.getPort()).isEqualTo(6379);
-        assertThat(sinkDescriptor.getTtl()).isEqualTo(180);
+        assertThat(sinkDescriptor.getTtl()).isEqualTo(1800);
         assertThat(sinkDescriptor.getKeys().get(0)).isEqualTo("first");
         RedisTableSink tableSink = sinkDescriptor.transform();
         assertThat(tableSink).isNotNull();
