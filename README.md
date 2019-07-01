@@ -13,7 +13,7 @@
 
 #### 快速运行
 ```
-  mvn clean package -DskipTests -Pnpm
+  mvn clean package -DskipTests -Pdev,npm
 ```
 ```
   java -jar alchemy-web/target/alchemy-web-1.0.0-SNAPSHOT.jar
@@ -82,7 +82,6 @@ resource的config目录下，修改dingtalk的webhook
 
 * 维表支持redis、hbase等
 * 支持yarn模式
-* 支持最新版flink
 * 动态拉取schema字段
 * ......
 
