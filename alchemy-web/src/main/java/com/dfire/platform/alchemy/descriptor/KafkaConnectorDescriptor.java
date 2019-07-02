@@ -8,6 +8,7 @@ import com.dfire.platform.alchemy.util.TypeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.streaming.connectors.kafka.Kafka010TableSource;
 import org.apache.flink.streaming.connectors.kafka.config.StartupMode;
@@ -147,7 +148,7 @@ public class KafkaConnectorDescriptor implements ConnectorDescriptor {
                     startupMode = StartupMode.GROUP_OFFSETS;
             }
         }
-        DeserializationSchema<Row> deserializationSchema = format.transform(new RowTypeInfo(columnTypes, columnNames));
+        DeserializationSchema<Row> deserializationSchema = format.transform(new Tuple2<>(new RowTypeInfo(columnTypes, columnNames), true));
         return (T)new Kafka010TableSource(
             new TableSchema(columnNames, columnTypes),
             proctimeAttribute == null ? Optional.empty(): Optional.of(proctimeAttribute),
@@ -156,7 +157,7 @@ public class KafkaConnectorDescriptor implements ConnectorDescriptor {
             this.topic,
             PropertiesUtil.fromYamlMap(this.properties),
             deserializationSchema,
-            startupMode,
+            startupMode == null ? StartupMode.GROUP_OFFSETS : startupMode,
             specificStartupOffsets == null ?Collections.emptyMap() : specificStartupOffsets
         );
     }

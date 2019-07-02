@@ -15,8 +15,6 @@ public class MysqlSinkDescriptor extends SinkDescriptor {
 
     private static final String DEFAULT_DRIVER_NAME = "com.zaxxer.hikari.HikariDataSource";
 
-    private String name;
-
     private String username;
 
     private String password;
@@ -85,15 +83,6 @@ public class MysqlSinkDescriptor extends SinkDescriptor {
 
     public void setParameterTypes(String[] parameterTypes) {
         this.parameterTypes = parameterTypes;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

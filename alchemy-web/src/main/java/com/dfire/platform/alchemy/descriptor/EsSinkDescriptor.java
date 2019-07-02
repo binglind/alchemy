@@ -15,8 +15,6 @@ import java.util.Map;
  */
 public class EsSinkDescriptor extends SinkDescriptor {
 
-    private String name;
-
     private String transports;
 
     private String clusterName;
@@ -37,14 +35,6 @@ public class EsSinkDescriptor extends SinkDescriptor {
 
     private Map<String, Object> config;
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getTransports() {
         return transports;

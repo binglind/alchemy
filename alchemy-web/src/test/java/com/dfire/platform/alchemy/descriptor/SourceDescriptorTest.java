@@ -8,6 +8,7 @@ import com.dfire.platform.alchemy.connectors.mysql.side.MysqlAsyncSideFunction;
 import com.dfire.platform.alchemy.formats.grok.GrokRowDeserializationSchema;
 import com.dfire.platform.alchemy.util.BindPropertiesUtil;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.connectors.kafka.KafkaTableSourceBase;
 import org.apache.flink.table.sources.CsvTableSource;
 import org.apache.flink.table.sources.RowtimeAttributeDescriptor;
@@ -44,7 +45,7 @@ public class SourceDescriptorTest {
         assertThat(rowtimeAttributeDescriptors.get(0).getAttributeName()).isEqualTo("rowTime");
         assertThat(rowtimeAttributeDescriptors.get(0).getTimestampExtractor()).isInstanceOf(ExistingField.class);
         assertThat(rowtimeAttributeDescriptors.get(0).getWatermarkStrategy()).isInstanceOf(BoundedOutOfOrderTimestamps.class);
-        DeserializationSchema deserializationSchema = formatDescriptor.transform(alchemyKafkaTableSource.getReturnType());
+        DeserializationSchema deserializationSchema = formatDescriptor.transform(new Tuple2<>(alchemyKafkaTableSource.getReturnType(), true));
         assertThat(deserializationSchema).isInstanceOf(GrokRowDeserializationSchema.class);
     }
 

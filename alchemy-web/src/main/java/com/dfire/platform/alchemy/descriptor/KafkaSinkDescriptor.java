@@ -2,10 +2,15 @@ package com.dfire.platform.alchemy.descriptor;
 
 import com.dfire.platform.alchemy.common.Constants;
 import com.dfire.platform.alchemy.util.PropertiesUtil;
+import org.apache.flink.api.common.serialization.SerializationSchema;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.formats.json.JsonRowSerializationSchema;
 import org.apache.flink.streaming.connectors.kafka.Kafka010TableSink;
 import org.apache.flink.table.api.TableSchema;
+import org.apache.flink.table.api.Types;
+import org.apache.flink.table.calcite.FlinkTypeFactory;
+import org.apache.flink.types.Row;
 import org.springframework.util.Assert;
 
 import java.util.Map;
@@ -17,20 +22,9 @@ import java.util.Optional;
  */
 public class KafkaSinkDescriptor extends SinkDescriptor {
 
-    private String name;
-
     private String topic;
 
     private Map<String, Object> properties;
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getTopic() {
         return topic;
@@ -50,15 +44,30 @@ public class KafkaSinkDescriptor extends SinkDescriptor {
 
     @Override
     public <T> T transform(TableSchema param) throws Exception {
-        if(param == null){
+        TableSchema tableSchema = createTableSchema();
+        if (tableSchema == null) {
+            tableSchema = param;
+        }
+        if (tableSchema == null) {
             throw new IllegalArgumentException("TableSchema must be not null");
         }
+        TypeInformation[] fieldTypes = new TypeInformation[tableSchema.getFieldCount()];
+        for (int i = 0; i < tableSchema.getFieldCount(); i++) {
+            if (FlinkTypeFactory.isTimeIndicatorType(tableSchema.getFieldTypes()[i])) {
+                fieldTypes[i] = Types.SQL_TIMESTAMP();
+            }else{
+                fieldTypes[i] = tableSchema.getFieldTypes()[i];
+            }
+        }
+        TypeInformation typeInformation = new RowTypeInfo(fieldTypes, tableSchema.getFieldNames());
+        SerializationSchema<Row> rowSerializationSchema = createSerializationSchema(typeInformation);
         return (T) new Kafka010TableSink(
-            param,
+            new TableSchema(tableSchema.getFieldNames(), fieldTypes),
             this.topic,
             PropertiesUtil.fromYamlMap(this.getProperties()),
             Optional.empty(),
-            new JsonRowSerializationSchema(new RowTypeInfo(param.getFieldTypes(), param.getFieldNames())));
+            rowSerializationSchema == null ? new JsonRowSerializationSchema(typeInformation) : rowSerializationSchema
+        );
     }
 
     @Override

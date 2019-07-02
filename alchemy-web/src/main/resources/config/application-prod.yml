@@ -91,6 +91,13 @@ server:
     mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
     min-response-size: 1024
 
+alchemy:
+    repository:
+        release:  #设置私服地址
+        snapshot: #设置私服地址
+    dingtalk:
+        webhook: #设置钉钉机器人地址
+
 # ===================================================================
 # JHipster specific properties
 #

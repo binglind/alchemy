@@ -15,8 +15,6 @@ import java.util.Map;
  */
 public class HbaseSinkDescriptor extends SinkDescriptor {
 
-    private String name;
-
     private String zookeeper;
 
     private String node;
@@ -40,15 +38,6 @@ public class HbaseSinkDescriptor extends SinkDescriptor {
     private long bufferSize;
 
     private boolean skipWal;
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getZookeeper() {
         return zookeeper;

@@ -13,8 +13,6 @@ import org.springframework.util.Assert;
  */
 public class FileSystemSinkDescriptor extends SinkDescriptor {
 
-    private String name;
-
     private String basePath;
 
     private String dateFormat;
@@ -46,15 +44,6 @@ public class FileSystemSinkDescriptor extends SinkDescriptor {
     private Boolean useTruncate;
 
     private Long asyncTimeout;
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getBasePath() {
         return basePath;

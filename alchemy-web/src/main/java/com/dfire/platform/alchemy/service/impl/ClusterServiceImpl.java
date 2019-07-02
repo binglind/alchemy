@@ -1,29 +1,26 @@
 package com.dfire.platform.alchemy.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.dfire.platform.alchemy.client.ClientManager;
 import com.dfire.platform.alchemy.domain.Cluster;
 import com.dfire.platform.alchemy.repository.ClusterRepository;
 import com.dfire.platform.alchemy.service.ClusterService;
 import com.dfire.platform.alchemy.service.dto.ClusterDTO;
 import com.dfire.platform.alchemy.service.mapper.ClusterMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * Service Implementation for managing {@link Cluster}.
  */
 @Service
 @Transactional
-public class ClusterServiceImpl implements ClusterService, InitializingBean {
+public class ClusterServiceImpl implements ClusterService {
 
     private final Logger log = LoggerFactory.getLogger(ClusterServiceImpl.class);
 
@@ -93,17 +90,5 @@ public class ClusterServiceImpl implements ClusterService, InitializingBean {
         log.debug("Request to delete Cluster : {}", id);
         clusterRepository.deleteById(id);
         clientManager.deleteClient(id);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        List<Cluster> clusterList = clusterRepository.findAll();
-        clusterList.forEach(cluster -> {
-            try {
-                clientManager.putClient(cluster);
-            } catch (Exception e) {
-                log.error("Init Cluster Exception", e);
-            }
-        });
     }
 }

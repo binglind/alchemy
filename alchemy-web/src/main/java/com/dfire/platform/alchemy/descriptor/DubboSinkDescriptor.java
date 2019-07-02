@@ -14,8 +14,6 @@ import java.util.Properties;
  */
 public class DubboSinkDescriptor extends SinkDescriptor {
 
-    private String name;
-
     private String uniqueName;
 
     private String applicationName;
@@ -84,11 +82,6 @@ public class DubboSinkDescriptor extends SinkDescriptor {
 
     public void setProperties(Properties properties) {
         this.properties = properties;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override

@@ -21,6 +21,8 @@ public final class Constants {
 
     public static final String TYPE_VALUE_FORMAT_HESSIAN = "hessian";
 
+    public static final String TYPE_VALUE_FORMAT_TYPEINFO = "typeinfo";
+
     public static final String TYPE_VALUE_FORMAT_PB = "protostuff";
 
     public static final String TYPE_VALUE_FORMAT_GROK = "grok";

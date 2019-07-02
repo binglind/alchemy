@@ -14,8 +14,6 @@ import java.util.List;
  */
 public class TsdbSinkDescriptor extends SinkDescriptor {
 
-    private String name;
-
     private String url;
 
     private List<String> metrics;
@@ -33,15 +31,6 @@ public class TsdbSinkDescriptor extends SinkDescriptor {
     private Integer batchPutTimeLimit;
 
     private Integer putRequestLimit;
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getUrl() {
         return url;

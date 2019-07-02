@@ -14,8 +14,6 @@ import java.util.List;
  */
 public class RedisSinkDescriptor extends SinkDescriptor {
 
-    private String name;
-
     private String host;
 
     private int port;
@@ -41,15 +39,6 @@ public class RedisSinkDescriptor extends SinkDescriptor {
     private Sentinel sentinel;
 
     private PoolConfig config = new PoolConfig();
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getHost() {
         return host;
