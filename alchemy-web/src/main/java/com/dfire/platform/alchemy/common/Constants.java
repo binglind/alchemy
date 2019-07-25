@@ -37,7 +37,9 @@ public final class Constants {
 
     public static final String SINK_TYPE_VALUE_REDIS = "redis";
 
-    public static final String SINK_TYPE_VALUE_ES = "elasticsearch5";
+    public static final String SINK_TYPE_VALUE_ES5 = "elasticsearch5";
+
+    public static final String SINK_TYPE_VALUE_ES6 = "elasticsearch6";
 
     public static final String SINK_TYPE_VALUE_HBASE = "hbase";
 

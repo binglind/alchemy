@@ -1,0 +1,7 @@
+hosts:
+    - localhost:9200
+index: flink-test
+document-type: test
+failure-handler: IGNORE
+config:
+    bulk-flush-max-actions: 3

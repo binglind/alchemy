@@ -20,6 +20,7 @@
     <modules>
         <module>alchemy-connectors-common</module>
         <module>alchemy-connectors-elasticsearch5</module>
+        <module>alchemy-connectors-elasticsearch6</module>
         <module>alchemy-connectors-hbase</module>
         <module>alchemy-connectors-kafka010</module>
         <module>alchemy-connectors-redis</module>

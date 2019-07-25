@@ -1,6 +1,6 @@
 # elasticsearch
-### es写入端配置
-参考[EsSinkDescriptor](../../alchemy-web/src/main/java/com/dfire/platform/alchemy/descriptor/EsSinkDescriptor.java)
+### es5写入端配置
+参考[Es5SinkDescriptor](../../alchemy-web/src/main/java/com/dfire/platform/alchemy/descriptor/Es5SinkDescriptor.java)
 
 ```yaml
 cluster-name: daily #集群名
@@ -14,3 +14,16 @@ config:  #es sink的额外配置
 ```
 
 
+### es6写入端配置
+参考[Es6SinkDescriptor](../../alchemy-web/src/main/java/com/dfire/platform/alchemy/descriptor/Es6SinkDescriptor.java)
+
+```yaml
+hosts:
+    - localhost:9200
+index: flink-test
+document-type: test
+failure-handler: IGNORE
+config:
+    bulk-flush-max-actions: 3
+
+```

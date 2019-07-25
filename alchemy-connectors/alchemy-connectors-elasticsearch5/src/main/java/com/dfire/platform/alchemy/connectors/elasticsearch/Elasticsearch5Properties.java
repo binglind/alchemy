@@ -7,7 +7,7 @@ import java.util.Map;
  * @author congbai
  * @date 2019/6/2
  */
-public class ElasticsearchProperties implements Serializable {
+public class Elasticsearch5Properties implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,8 +22,6 @@ public class ElasticsearchProperties implements Serializable {
     private String indexField;
 
     private String failureHandler;
-
-    private String mapClazz;
 
     private Map<String, Object> config;
 
@@ -73,14 +71,6 @@ public class ElasticsearchProperties implements Serializable {
 
     public void setConfig(Map<String, Object> config) {
         this.config = config;
-    }
-
-    public String getMapClazz() {
-        return mapClazz;
-    }
-
-    public void setMapClazz(String mapClazz) {
-        this.mapClazz = mapClazz;
     }
 
     public String getIndexType() {

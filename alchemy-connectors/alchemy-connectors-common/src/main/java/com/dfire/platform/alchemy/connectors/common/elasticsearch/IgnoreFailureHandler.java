@@ -15,24 +15,23 @@
  * limitations under the License.
  */
 
-package com.dfire.platform.alchemy.connectors.elasticsearch;
+package com.dfire.platform.alchemy.connectors.common.elasticsearch;
 
-import org.apache.flink.annotation.Internal;
 import org.apache.flink.streaming.connectors.elasticsearch.ActionRequestFailureHandler;
 import org.apache.flink.streaming.connectors.elasticsearch.RequestIndexer;
 import org.elasticsearch.action.ActionRequest;
 
+
 /**
- * An {@link ActionRequestFailureHandler} that simply fails the sink on any failures.
+ * @author dongbinglin
  */
-@Internal
 public class IgnoreFailureHandler implements ActionRequestFailureHandler {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public void onFailure(ActionRequest action, Throwable failure, int restStatusCode, RequestIndexer indexer) throws Throwable {
-		// simply fail the sink
-	}
+    @Override
+    public void onFailure(ActionRequest action, Throwable failure, int restStatusCode, RequestIndexer indexer) throws Throwable {
+        // simply fail the sink
+    }
 
 }

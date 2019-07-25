@@ -1,4 +1,4 @@
-package com.dfire.platform.alchemy.connectors.elasticsearch;
+package com.dfire.platform.alchemy.connectors.common.elasticsearch;
 
 public enum FailureHandler {
     NOOP,

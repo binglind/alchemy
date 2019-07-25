@@ -3,6 +3,7 @@ package com.dfire.platform.alchemy.config;
 import com.dfire.platform.alchemy.client.ClientManager;
 import com.dfire.platform.alchemy.domain.Cluster;
 import com.dfire.platform.alchemy.repository.ClusterRepository;
+import com.dfire.platform.alchemy.service.mapper.ClusterMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -18,10 +19,13 @@ public class ApplicationReadyEventListener implements ApplicationListener<Applic
 
     private final ClientManager clientManager;
 
+    private final ClusterMapper clusterMapper;
+
     private final ClusterRepository clusterRepository;
 
-    public ApplicationReadyEventListener(ClientManager clientManager, ClusterRepository clusterRepository) {
+    public ApplicationReadyEventListener(ClientManager clientManager, ClusterMapper clusterMapper, ClusterRepository clusterRepository) {
         this.clientManager = clientManager;
+        this.clusterMapper = clusterMapper;
         this.clusterRepository = clusterRepository;
     }
 
@@ -30,7 +34,7 @@ public class ApplicationReadyEventListener implements ApplicationListener<Applic
         List<Cluster> clusterList = clusterRepository.findAll();
         clusterList.forEach(cluster -> {
             try {
-                clientManager.putClient(cluster);
+                clientManager.addClientOnly(clusterMapper.toDto(cluster));
             } catch (Exception e) {
                 LOGGER.error("Init Cluster Exception", e);
             }

@@ -152,6 +152,11 @@
         </dependency>
         <dependency>
             <groupId>com.dfire.platform</groupId>
+            <artifactId>alchemy-connectors-elasticsearch6</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dfire.platform</groupId>
             <artifactId>alchemy-connectors-hbase</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -599,7 +604,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

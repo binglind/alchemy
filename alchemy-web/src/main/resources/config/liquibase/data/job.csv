@@ -3,7 +3,7 @@ id;"name";"jhi_type";"config";"remark";"cluster_job_id";"status";"created_by";"c
 parallelism: 1
 time-characteristic: EventTime
 restart-strategies:  FIXED
-restart-params: 
+restart-params:
   restart-attempts: 10
   delay-between-attempts: 10000
 dependencies:
@@ -13,6 +13,6 @@ dependencies:
 parallelism: 1
 time-characteristic: EventTime
 restart-strategies:  FIXED
-restart-params: 
+restart-params:
   restart-attempts: 10
   delay-between-attempts: 10000";"将应用日志写入file";"1165cd6f40b0e4eab904cbe3a70ddc46";"UPDATE";"admin";"2019-06-18 10:21:00";"admin";"2019-06-20 11:34:20";1;1

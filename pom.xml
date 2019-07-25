@@ -45,7 +45,7 @@
         <scala.version>2.11.11</scala.version>
         <maven.compiler.source>1.7</maven.compiler.source>
         <lombok.version>1.16.18</lombok.version>
-        <fastjson.versoiin>1.2.46</fastjson.versoiin>
+        <fastjson.versoiin>1.2.58</fastjson.versoiin>
         <commons-io.version>2.6</commons-io.version>
         <groovy.version>2.4.11</groovy.version>
         <slf4j-api.version>1.7.7</slf4j-api.version>
@@ -126,7 +126,17 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
+                <artifactId>flink-connector-elasticsearch-base_${scala.binary.version}</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
                 <artifactId>flink-connector-elasticsearch5_${scala.binary.version}</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-connector-elasticsearch6_${scala.binary.version}</artifactId>
                 <version>${flink.version}</version>
             </dependency>
             <dependency>

@@ -88,7 +88,7 @@ public class SinkDescriptorTest {
     @Test
     public void buildElasticsearchSink() throws Exception {
         File file = ResourceUtils.getFile("classpath:yaml/es-sink.yaml");
-        EsSinkDescriptor sinkDescriptor = BindPropertiesUtil.bindProperties(file, EsSinkDescriptor.class);
+        Es5SinkDescriptor sinkDescriptor = BindPropertiesUtil.bindProperties(file, Es5SinkDescriptor.class);
         assertThat(sinkDescriptor.getIndex()).isNotNull();
         assertThat(sinkDescriptor.getClusterName()).isNotNull();
         assertThat(sinkDescriptor.getTransports()).isNotNull();

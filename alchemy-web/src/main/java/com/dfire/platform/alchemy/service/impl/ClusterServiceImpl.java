@@ -46,10 +46,15 @@ public class ClusterServiceImpl implements ClusterService {
     @Override
     public ClusterDTO save(ClusterDTO clusterDTO) throws Exception {
         log.debug("Request to save Cluster : {}", clusterDTO);
+        boolean update = clusterDTO.getId() != null;
         Cluster cluster = clusterMapper.toEntity(clusterDTO);
         cluster = clusterRepository.save(cluster);
         ClusterDTO dto = clusterMapper.toDto(cluster);
-        clientManager.putClient(cluster);
+        if(update){
+            clientManager.updateClient(dto);
+        }else{
+            clientManager.putClient(dto);
+        }
         return dto;
     }
 
@@ -86,9 +91,10 @@ public class ClusterServiceImpl implements ClusterService {
      * @param id the id of the entity.
      */
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws Exception {
         log.debug("Request to delete Cluster : {}", id);
+        Cluster cluster = clusterRepository.getOne(id);
         clusterRepository.deleteById(id);
-        clientManager.deleteClient(id);
+        clientManager.deleteClient(clusterMapper.toDto(cluster));
     }
 }

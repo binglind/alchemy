@@ -97,7 +97,15 @@ alchemy:
         snapshot: #设置私服地址
     dingtalk:
         webhook: #设置钉钉机器人地址
-
+    openshift:
+        url: https://www.openshift.com  # 替换成自己的openshift平台地址
+        username: xxxx
+        password: xxxx
+        namespace: xxxx
+        serviceAccount: xxx
+        serviceAccountName: xxxxx
+        hadoopVolumeName: xxxx  #与hadoop相关configMap的name，需要事先创建好，比如创建了一个configMap,加入了hdfs-site.xml，configMapd的name叫hadoop
+        hadoopUserName: xxxx  # hadoop的用户名
 # ===================================================================
 # JHipster specific properties
 #

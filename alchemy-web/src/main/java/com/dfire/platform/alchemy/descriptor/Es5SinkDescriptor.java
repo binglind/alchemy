@@ -1,7 +1,7 @@
 package com.dfire.platform.alchemy.descriptor;
 
 import com.dfire.platform.alchemy.common.Constants;
-import com.dfire.platform.alchemy.connectors.elasticsearch.ElasticsearchProperties;
+import com.dfire.platform.alchemy.connectors.elasticsearch.Elasticsearch5Properties;
 import com.dfire.platform.alchemy.connectors.elasticsearch.ElasticsearchTableSink;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @author congbai
  * @date 03/06/2018
  */
-public class EsSinkDescriptor extends SinkDescriptor {
+public class Es5SinkDescriptor extends SinkDescriptor {
 
     private String transports;
 
@@ -94,7 +94,7 @@ public class EsSinkDescriptor extends SinkDescriptor {
 
     @Override
     public <T> T transform() throws Exception {
-        ElasticsearchProperties properties = new ElasticsearchProperties();
+        Elasticsearch5Properties properties = new Elasticsearch5Properties();
         BeanUtils.copyProperties(this, properties);
         return (T)new ElasticsearchTableSink(properties);
     }
@@ -108,7 +108,7 @@ public class EsSinkDescriptor extends SinkDescriptor {
 
     @Override
     public String type() {
-        return Constants.SINK_TYPE_VALUE_ES;
+        return Constants.SINK_TYPE_VALUE_ES5;
     }
 
 }

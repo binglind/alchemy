@@ -28,10 +28,11 @@
 #### 支持
 
 ##### yaml配置
-所有的yaml配置以"-"作为分隔符
+所有的yaml配置建议以"-"作为分隔符
 
-##### flink集群模式
-- 目前仅支持[standalone](/docs/static_files/cluster.md)模式
+##### [flink集群模式](/docs/static_files/cluster.md)
+- standalone
+- openshift : 可以在openshift上自动创建和管理集群
 
 ##### 源表
 - [kafka010](/docs/static_files/kafka.md)
@@ -49,6 +50,7 @@
 ##### 写入端
 - [kafka010](/docs/static_files/kafka.md)
 - [elasticsearch5](/docs/static_files/elasticsearch.md)
+- [elasticsearch6](/docs/static_files/elasticsearch.md)
 - [hbase](/docs/static_files/hbase.md)
 - [redis](/docs/static_files/redis.md)
 - [dubbo](/docs/static_files/dubbo.md)

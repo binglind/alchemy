@@ -1,13 +1,11 @@
 package com.dfire.platform.alchemy.connectors.elasticsearch;
 
-import org.apache.flink.api.common.functions.MapFunction;
+import com.dfire.platform.alchemy.connectors.common.util.ActionRequestFailureHandlerUtil;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.formats.json.JsonRowSerializationSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.connectors.elasticsearch.ActionRequestFailureHandler;
-import org.apache.flink.streaming.connectors.elasticsearch.util.NoOpFailureHandler;
-import org.apache.flink.streaming.connectors.elasticsearch.util.RetryRejectedExecutionFailureHandler;
 import org.apache.flink.streaming.connectors.elasticsearch5.ElasticsearchSink;
 import org.apache.flink.table.sinks.AppendStreamTableSink;
 import org.apache.flink.table.sinks.TableSink;
@@ -28,7 +26,7 @@ import java.util.Map;
  */
 public class ElasticsearchTableSink implements AppendStreamTableSink<Row> {
 
-    private final ElasticsearchProperties elasticsearchProperties;
+    private final Elasticsearch5Properties elasticsearch5Properties;
 
     private String[] fieldNames;
 
@@ -36,8 +34,8 @@ public class ElasticsearchTableSink implements AppendStreamTableSink<Row> {
 
     private JsonRowSerializationSchema jsonRowSchema;
 
-    public ElasticsearchTableSink(ElasticsearchProperties elasticsearchProperties) {
-        this.elasticsearchProperties = elasticsearchProperties;
+    public ElasticsearchTableSink(Elasticsearch5Properties elasticsearch5Properties) {
+        this.elasticsearch5Properties = elasticsearch5Properties;
     }
 
     @Override
@@ -57,11 +55,11 @@ public class ElasticsearchTableSink implements AppendStreamTableSink<Row> {
 
     @Override
     public TableSink<Row> configure(String[] fieldNames, TypeInformation<?>[] fieldTypes) {
-        ElasticsearchTableSink copy = new ElasticsearchTableSink(this.elasticsearchProperties);
+        ElasticsearchTableSink copy = new ElasticsearchTableSink(this.elasticsearch5Properties);
         copy.fieldNames = Preconditions.checkNotNull(fieldNames, "fieldNames");
         copy.fieldTypes = Preconditions.checkNotNull(fieldTypes, "fieldTypes");
         Preconditions.checkArgument(fieldNames.length == fieldTypes.length,
-            "Number of provided field names and types does not match.");
+                "Number of provided field names and types does not match.");
 
         RowTypeInfo rowSchema = new RowTypeInfo(fieldTypes, fieldNames);
         copy.jsonRowSchema = new JsonRowSerializationSchema(rowSchema);
@@ -72,65 +70,35 @@ public class ElasticsearchTableSink implements AppendStreamTableSink<Row> {
     private ElasticsearchSink<Row> createEsSink() {
         Map<String, String> userConfig = createUserConfig();
         List<InetSocketAddress> transports = new ArrayList<>();
-        addTransportAddress(transports, this.elasticsearchProperties.getTransports());
-        ActionRequestFailureHandler actionRequestFailureHandler = createFailureHandler(this.elasticsearchProperties.getFailureHandler());
-        Integer fieldIndex = findIndex(this.elasticsearchProperties.getIndexField(), this.fieldNames);
-        MapFunction<byte[], byte[]> mapFunction = createMapFunction(this.elasticsearchProperties.getMapClazz());
+        addTransportAddress(transports, this.elasticsearch5Properties.getTransports());
+        ActionRequestFailureHandler actionRequestFailureHandler = ActionRequestFailureHandlerUtil.createFailureHandler(this.elasticsearch5Properties.getFailureHandler());
+        Integer fieldIndex = findIndex(this.elasticsearch5Properties.getIndexField(), this.fieldNames);
         return new ElasticsearchSink<>(userConfig, transports,
-            new ElasticsearchTableFunction(
-                    this.elasticsearchProperties.getIndex(),
-                    fieldIndex ,
-                    this.elasticsearchProperties.getIndexType(),
-                    jsonRowSchema,
-                    mapFunction),
+                new ElasticsearchTableFunction(
+                        this.elasticsearch5Properties.getIndex(),
+                        fieldIndex,
+                        this.elasticsearch5Properties.getIndexType(),
+                        jsonRowSchema),
                 actionRequestFailureHandler);
     }
 
-    private MapFunction<byte[], byte[]> createMapFunction(String mapClazz){
-        if(mapClazz == null || mapClazz.trim().length() == 0){
-            return null;
-        }
-        try {
-            Class<MapFunction<byte[], byte[]>> clazz = (Class<MapFunction<byte[], byte[]>>) Class.forName(mapClazz);
-            return clazz.newInstance();
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
-
-    }
-
     private Integer findIndex(String indexField, String[] fieldNames) {
-        for(int i =0 ; i< fieldNames.length ; i ++){
-            if(fieldNames[i].equals(indexField)){
+        for (int i = 0; i < fieldNames.length; i++) {
+            if (fieldNames[i].equals(indexField)) {
                 return i;
             }
         }
         return null;
     }
 
-    private ActionRequestFailureHandler createFailureHandler(String failureHandler) {
-        if(failureHandler == null || failureHandler.trim().length() == 0){
-            return new NoOpFailureHandler();
-        }
-        FailureHandler handler = FailureHandler.valueOf(failureHandler.toUpperCase());
-        switch (handler){
-            case IGNORE:
-                return new IgnoreFailureHandler();
-            case RETRYREJECTED:
-                return new RetryRejectedExecutionFailureHandler();
-            default:
-                return new NoOpFailureHandler();
-        }
-    }
-
     private Map<String, String> createUserConfig() {
-        Map<String, String> userConfig  =new HashMap<>();
-        userConfig.put("cluster.name", this.elasticsearchProperties.getClusterName());
-        Map<String, Object> config = this.elasticsearchProperties.getConfig();
-        if (config == null){
+        Map<String, String> userConfig = new HashMap<>();
+        userConfig.put("cluster.name", this.elasticsearch5Properties.getClusterName());
+        Map<String, Object> config = this.elasticsearch5Properties.getConfig();
+        if (config == null) {
             return userConfig;
         }
-        for(Map.Entry<String, Object> entry : config.entrySet()){
+        for (Map.Entry<String, Object> entry : config.entrySet()) {
             userConfig.put(entry.getKey(), String.valueOf(entry.getValue()));
         }
         return userConfig;

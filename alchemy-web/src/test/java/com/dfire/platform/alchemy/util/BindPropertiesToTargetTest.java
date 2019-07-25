@@ -24,7 +24,7 @@ public class BindPropertiesToTargetTest {
         BindPoJo bindPoJo = BindPropertiesUtil.bindProperties(file, BindPoJo.class);
         assertThat(bindPoJo.getName()).isEqualTo("bindTest");
         assertThat(bindPoJo.getCamelCase()).isEqualTo("camelCase");
-        assertThat(bindPoJo.getInvalidCamelCase()).isNull();
+        assertThat(bindPoJo.getInvalidCamelCase()).isEqualTo("invalidCamelCase");
         assertThat(bindPoJo.getMap()).isNotNull();
         assertThat(bindPoJo.getMap().get("age")).isEqualTo(20);
         assertThat(bindPoJo.getMap().get("height")).isEqualTo(172);

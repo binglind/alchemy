@@ -25,6 +25,7 @@
                         <label class="form-control-label" jhiTranslate="alchemyApp.cluster.type" for="field_type">Type</label>
                         <select class="form-control" name="type" formControlName="type" id="field_type">
                             <option value="STANDALONE">{{'alchemyApp.ClusterType.STANDALONE' | translate}}</option>
+                            <option value="OPENSHIFT">{{'alchemyApp.ClusterType.OPENSHIFT' | translate}}</option>
                             <option value="YARN">{{'alchemyApp.ClusterType.YARN' | translate}}</option>
                         </select>
                         <div *ngIf="editForm.get('type').invalid && (editForm.get('type').dirty || editForm.get('type').touched)">

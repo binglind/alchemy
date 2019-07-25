@@ -1,6 +1,6 @@
 name: bindTest
 camel-case: camelCase
-invalidCamelCase: invalidCamelCase   # 驼峰式必须转换成'-'
+invalidCamelCase: invalidCamelCase
 map:
     age: 20
     height: 172

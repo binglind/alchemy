@@ -1,0 +1,23 @@
+{
+  "apiVersion": "route.openshift.io/v1",
+  "kind": "Route",
+  "metadata": {
+    "annotations": {
+      "openshift.io/host.generated": "false"
+    },
+    "name": "",
+    "namespace": ""
+  },
+  "spec": {
+    "host": "",
+    "port": {
+      "targetPort": "ui"
+    },
+    "to": {
+      "kind": "Service",
+      "name": "",
+      "weight": 100
+    },
+    "wildcardPolicy": "None"
+  }
+}

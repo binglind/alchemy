@@ -1,0 +1,96 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "labels": {
+      "app": "",
+      "component": ""
+    },
+    "name": "",
+    "namespace": ""
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "matchLabels": {
+        "app": "fink",
+        "component": ""
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "",
+          "component": ""
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "args": [
+
+            ],
+            "env": [
+              {
+                "name": "HADOOP_CONF_DIR",
+                "value": "/opt/flink/hadoop"
+              }
+            ],
+            "image": "",
+            "imagePullPolicy": "Always",
+            "name": "",
+            "ports": [
+              {
+                "containerPort": 6123,
+                "name": "rpc",
+                "protocol": "TCP"
+              },
+              {
+                "containerPort": 6124,
+                "name": "blob",
+                "protocol": "TCP"
+              },
+              {
+                "containerPort": 6125,
+                "name": "query",
+                "protocol": "TCP"
+              },
+              {
+                "containerPort": 8081,
+                "name": "ui",
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "1",
+                "memory": "3G"
+              },
+              "requests": {
+                "cpu": "200m",
+                "memory": "2G"
+              }
+            },
+            "volumeMounts": [
+              {
+                "mountPath": "/opt/flink/hadoop",
+                "name": "volume-qsb37"
+              }
+            ]
+          }
+        ],
+        "dnsPolicy": "ClusterFirst",
+        "restartPolicy": "Always",
+        "volumes": [
+          {
+            "configMap": {
+              "defaultMode": 420,
+              "name": "hadoop"
+            },
+            "name": "volume-qsb37"
+          }
+        ]
+      }
+    }
+  }
+}

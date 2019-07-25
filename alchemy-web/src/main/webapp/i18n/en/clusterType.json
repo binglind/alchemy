@@ -3,6 +3,7 @@
     "ClusterType": {
       "null": "",
       "STANDALONE": "STANDALONE",
+      "OPENSHIFT": "OPENSHIFT",
       "YARN": "YARN"
     }
   }

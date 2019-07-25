@@ -1,0 +1,25 @@
+name: test
+image: dongbl1114/docker-flink:1.8.0-alchemy
+job-manager-address: jobmanager-test
+replicas: 12
+job-manager-resources:
+    limits:
+        cpu: 2
+        memory: 4G
+    requests:
+        cpu: 200m
+        memory: 2G
+task-manager-resources:
+    limits:
+        cpu: 1
+        memory: 3G
+    requests:
+        cpu: 100m
+        memory: 2G
+configs:
+    high-availability.storageDir: /flink/ha/default
+    high-availability.zookeeper.quorum: 127.0.0.1
+    high-availability: zookeeper
+    high-availability.cluster-id: test
+    high-availability.jobmanager.port: 6123
+

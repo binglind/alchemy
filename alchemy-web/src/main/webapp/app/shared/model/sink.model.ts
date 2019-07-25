@@ -8,6 +8,7 @@ export const enum SinkType {
   TSDB = 'TSDB',
   FILE = 'FILE',
   ELASTICSEARCH5 = 'ELASTICSEARCH5',
+  ELASTICSEARCH6 = 'ELASTICSEARCH6',
   DUBBO = 'DUBBO'
 }
 

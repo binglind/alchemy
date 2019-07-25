@@ -20,7 +20,7 @@ import java.io.File;
  * @author congbai
  * @date 2019/5/29
  */
-public class EsTest extends BaseConnectorTest {
+public class Es5Test extends BaseConnectorTest {
 
     @Test
     public void write() throws Exception {
@@ -33,7 +33,7 @@ public class EsTest extends BaseConnectorTest {
         SqlSubmitFlinkRequest sqlSubmitFlinkRequest
             = BindPropertiesUtil.bindProperties(sqlJobFile, SqlSubmitFlinkRequest.class);
         SourceDescriptor sourceDescriptor = createSource("csv_source", "classpath:yaml/csv-source.yaml", SourceType.CSV, TableType.TABLE);
-        SinkDescriptor sinkDescriptor = createSink("es_sink", "classpath:yaml/es-sink.yaml", SinkType.ELASTICSEARCH5);
+        SinkDescriptor sinkDescriptor = createSink("es_sink", "classpath:yaml/es5-sink.yaml", SinkType.ELASTICSEARCH5);
         sqlSubmitFlinkRequest.setSources(Lists.newArrayList(sourceDescriptor));
         sqlSubmitFlinkRequest.setSinks(Lists.newArrayList(sinkDescriptor));
         sqlSubmitFlinkRequest.setSqls(SqlParseUtil.findQuerySql(Lists.newArrayList(sql)));
