@@ -23,6 +23,8 @@ public class OpenshiftProperties {
     
     private String hadoopUserName;
 
+    private boolean enable;
+
     public String getUrl() {
         return url;
     }
@@ -85,5 +87,13 @@ public class OpenshiftProperties {
 
     public void setHadoopUserName(String hadoopUserName) {
         this.hadoopUserName = hadoopUserName;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }

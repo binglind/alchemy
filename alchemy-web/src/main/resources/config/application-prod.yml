@@ -98,6 +98,7 @@ alchemy:
     dingtalk:
         webhook: #设置钉钉机器人地址
     openshift:
+        enable: false
         url: https://www.openshift.com  # 替换成自己的openshift平台地址
         username: xxxx
         password: xxxx

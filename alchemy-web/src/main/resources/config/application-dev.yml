@@ -79,6 +79,7 @@ alchemy:
   dingtalk:
     webhook: https://oapi.dingtalk.com/robot/send?access_token=yourtoken
   openshift:
+      enable: false  #openshift开关，默认关闭
       url: https://www.openshift.com  # 替换成自己的openshift平台地址
       username: xxxx
       password: xxxx

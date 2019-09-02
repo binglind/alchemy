@@ -84,7 +84,9 @@ public class OpenshiftService {
         this.service = loadTemplate("service.json");
         this.router = loadTemplate("router.json");
         this.tokenService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setDaemon(true).setNameFormat("token-service-%d").build());
-        this.tokenService.scheduleAtFixedRate(new TokenTask(), 0, 86300, TimeUnit.SECONDS);
+        if(this.openshiftProperties.isEnable()){
+            this.tokenService.scheduleAtFixedRate(new TokenTask(), 0, 86300, TimeUnit.SECONDS);
+        }
     }
 
     private String loadTemplate(String fileName) throws IOException {
