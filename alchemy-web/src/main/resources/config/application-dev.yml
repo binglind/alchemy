@@ -35,7 +35,7 @@ spring:
   jackson:
     serialization:
       indent-output: true
-    datasource:
+  datasource:
       type: com.zaxxer.hikari.HikariDataSource
       url: jdbc:h2:mem:alchemy;MODE=MYSQL;DB_CLOSE_DELAY=-1
       username: alchemy
@@ -43,10 +43,10 @@ spring:
       hikari:
         poolName: Hikari
         auto-commit: false
-    h2:
+  h2:
       console:
         enabled: false
-    jpa:
+  jpa:
       database-platform: io.github.jhipster.domain.util.FixedH2Dialect
       database: H2
       show-sql: true
