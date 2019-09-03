@@ -40,6 +40,8 @@ public class OpenshiftService {
 
     public static final String FLINK_ADD_CONFIG = "FLINK_ADD_CONFIG";
 
+    public static final String FLINK_CONFIG_SPLIT = "|";
+
     public static final String HADOOP_USER_NAME = "HADOOP_USER_NAME";
 
     public static final String JOB_MANAGER_RPC_ADDRESS = "JOB_MANAGER_RPC_ADDRESS";
@@ -260,7 +262,7 @@ public class OpenshiftService {
     private String createConfigs(Map<String, Object> configs) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, Object> config : configs.entrySet()) {
-            stringBuilder.append(config.getKey()).append(" ").append(config.getValue()).append(" ");
+            stringBuilder.append(config.getKey()).append(FLINK_CONFIG_SPLIT).append(config.getValue()).append(FLINK_CONFIG_SPLIT);
         }
         return stringBuilder.toString();
     }
