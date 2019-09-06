@@ -24,7 +24,7 @@ import java.util.Map;
  * @author congbai
  * @date 05/06/2018
  */
-public class ElasticsearchTableSink implements AppendStreamTableSink<Row> {
+public class Elasticsearch5TableSink implements AppendStreamTableSink<Row> {
 
     private final Elasticsearch5Properties elasticsearch5Properties;
 
@@ -34,7 +34,7 @@ public class ElasticsearchTableSink implements AppendStreamTableSink<Row> {
 
     private JsonRowSerializationSchema jsonRowSchema;
 
-    public ElasticsearchTableSink(Elasticsearch5Properties elasticsearch5Properties) {
+    public Elasticsearch5TableSink(Elasticsearch5Properties elasticsearch5Properties) {
         this.elasticsearch5Properties = elasticsearch5Properties;
     }
 
@@ -55,7 +55,7 @@ public class ElasticsearchTableSink implements AppendStreamTableSink<Row> {
 
     @Override
     public TableSink<Row> configure(String[] fieldNames, TypeInformation<?>[] fieldTypes) {
-        ElasticsearchTableSink copy = new ElasticsearchTableSink(this.elasticsearch5Properties);
+        Elasticsearch5TableSink copy = new Elasticsearch5TableSink(this.elasticsearch5Properties);
         copy.fieldNames = Preconditions.checkNotNull(fieldNames, "fieldNames");
         copy.fieldTypes = Preconditions.checkNotNull(fieldTypes, "fieldTypes");
         Preconditions.checkArgument(fieldNames.length == fieldTypes.length,
@@ -74,7 +74,7 @@ public class ElasticsearchTableSink implements AppendStreamTableSink<Row> {
         ActionRequestFailureHandler actionRequestFailureHandler = ActionRequestFailureHandlerUtil.createFailureHandler(this.elasticsearch5Properties.getFailureHandler());
         Integer fieldIndex = findIndex(this.elasticsearch5Properties.getIndexField(), this.fieldNames);
         return new ElasticsearchSink<>(userConfig, transports,
-                new ElasticsearchTableFunction(
+                new Elasticsearch5TableFunction(
                         this.elasticsearch5Properties.getIndex(),
                         fieldIndex,
                         this.elasticsearch5Properties.getIndexType(),

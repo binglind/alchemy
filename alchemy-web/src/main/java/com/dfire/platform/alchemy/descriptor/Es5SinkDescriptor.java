@@ -2,7 +2,7 @@ package com.dfire.platform.alchemy.descriptor;
 
 import com.dfire.platform.alchemy.common.Constants;
 import com.dfire.platform.alchemy.connectors.elasticsearch.Elasticsearch5Properties;
-import com.dfire.platform.alchemy.connectors.elasticsearch.ElasticsearchTableSink;
+import com.dfire.platform.alchemy.connectors.elasticsearch.Elasticsearch5TableSink;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
@@ -96,7 +96,7 @@ public class Es5SinkDescriptor extends SinkDescriptor {
     public <T> T transform() throws Exception {
         Elasticsearch5Properties properties = new Elasticsearch5Properties();
         BeanUtils.copyProperties(this, properties);
-        return (T)new ElasticsearchTableSink(properties);
+        return (T)new Elasticsearch5TableSink(properties);
     }
 
     @Override

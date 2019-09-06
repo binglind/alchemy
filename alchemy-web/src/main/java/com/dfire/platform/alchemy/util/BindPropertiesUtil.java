@@ -1,11 +1,12 @@
 package com.dfire.platform.alchemy.util;
 
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.core.JsonToken;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.core.io.IOContext;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.DeserializationFeature;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.dataformat.yaml.YAMLParser;
+
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.io.IOContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,8 @@ public class BindPropertiesUtil {
     private static final char IGNORE_CHAR = '.';
 
     private static final char SPECIAL_CHAR = '-';
+
+    private static final char ESCAPE_CHAR = '\\';
 
     private static final ObjectMapper OBJECT_MAPPER = new LowerCaseYamlMapper();
 
@@ -108,6 +111,7 @@ public class BindPropertiesUtil {
                 StringBuilder result = new StringBuilder(length + (length << 1));
                 int upperCount = 0;
                 int ignoreCount = 0;
+                int escapeCount = 0;
                 for (int i = 0; i < length; ++i) {
                     char ch = input.charAt(i);
                     if (ignoreCount > 0) {
@@ -120,10 +124,17 @@ public class BindPropertiesUtil {
                         continue;
                     }
                     if (ch == SPECIAL_CHAR) {
-                        ++upperCount;
+                        if(escapeCount > 0){
+                            result.append(ch);
+                            escapeCount = 0;
+                        }else{
+                            ++upperCount;
+                        }
                     } else if (ch == IGNORE_CHAR) {
                         result.append(ch);
                         ++ignoreCount;
+                    } else if( ch == ESCAPE_CHAR){
+                        ++escapeCount;
                     } else {
                         result.append(ch);
                     }

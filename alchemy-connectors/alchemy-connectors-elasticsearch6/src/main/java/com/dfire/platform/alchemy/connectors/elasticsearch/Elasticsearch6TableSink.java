@@ -97,7 +97,7 @@ public class Elasticsearch6TableSink implements UpsertStreamTableSink<Row> {
     /**
      * Schema of the table.
      */
-    private final TableSchema schema;
+    private TableSchema schema;
 
     /**
      * Version-agnostic hosts configuration.
@@ -127,7 +127,7 @@ public class Elasticsearch6TableSink implements UpsertStreamTableSink<Row> {
     /**
      * Serialization schema used for the document.
      */
-    private final SerializationSchema<Row> serializationSchema;
+    private SerializationSchema<Row> serializationSchema;
 
     /**
      * Content type describing the serialization schema.
@@ -153,17 +153,16 @@ public class Elasticsearch6TableSink implements UpsertStreamTableSink<Row> {
 
     public Elasticsearch6TableSink(Elasticsearch6Properties elasticsearch6Properties) {
         this.elasticsearch6Properties = Preconditions.checkNotNull(elasticsearch6Properties);
+        Preconditions.checkArgument(elasticsearch6Properties.getIndex() != null || elasticsearch6Properties.getIndexField() != null);
         this.isAppendOnly = elasticsearch6Properties.isAppendOnly();
-        this.schema = Preconditions.checkNotNull(elasticsearch6Properties.getTableSchema());
-        this.index = Preconditions.checkNotNull(elasticsearch6Properties.getIndex());
         this.keyDelimiter = elasticsearch6Properties.getKeyDelimiter() == null ? DEFAULT_KEY_DELIMITER : elasticsearch6Properties.getKeyDelimiter();
-        this.keyNullLiteral = elasticsearch6Properties.getKeyNullLiteral() == null ?DEFAULT_KEY_NULL_LITERAL : elasticsearch6Properties.getKeyNullLiteral();
+        this.keyNullLiteral = elasticsearch6Properties.getKeyNullLiteral() == null ? DEFAULT_KEY_NULL_LITERAL : elasticsearch6Properties.getKeyNullLiteral();
         this.docType = Preconditions.checkNotNull(elasticsearch6Properties.getDocumentType());
-        this.serializationSchema = new JsonRowSerializationSchema(new RowTypeInfo(elasticsearch6Properties.getTableSchema().getFieldTypes(), elasticsearch6Properties.getTableSchema().getFieldNames()));
         this.contentType = XContentType.JSON;
         this.hosts = Preconditions.checkNotNull(createHosts(elasticsearch6Properties.getHosts()));
         this.failureHandler = Preconditions.checkNotNull(ActionRequestFailureHandlerUtil.createFailureHandler(elasticsearch6Properties.getFailureHandler()));
         this.requestFactory = new Elasticsearch6RequestFactory();
+        this.index = elasticsearch6Properties.getIndex();
         this.indexField = elasticsearch6Properties.getIndexField();
     }
 
@@ -211,12 +210,15 @@ public class Elasticsearch6TableSink implements UpsertStreamTableSink<Row> {
 
     @Override
     public TableSink<Tuple2<Boolean, Row>> configure(String[] fieldNames, TypeInformation<?>[] fieldTypes) {
-        if (!Arrays.equals(getFieldNames(), fieldNames) || !Arrays.equals(getFieldTypes(), fieldTypes)) {
-            throw new ValidationException("Reconfiguration with different fields is not allowed. " +
-                    "Expected: " + Arrays.toString(getFieldNames()) + " / " + Arrays.toString(getFieldTypes()) + ". " +
-                    "But was: " + Arrays.toString(fieldNames) + " / " + Arrays.toString(fieldTypes));
+        Preconditions.checkArgument(fieldNames.length == fieldTypes.length,
+                "Number of provided field names and types does not match.");
+        Elasticsearch6TableSink tableSink = new Elasticsearch6TableSink(this.elasticsearch6Properties);
+        if (this.elasticsearch6Properties.getTableSchema() == null) {
+            tableSink.schema = new TableSchema(fieldNames, fieldTypes);
         }
-        return new Elasticsearch6TableSink(elasticsearch6Properties);
+        RowTypeInfo rowTypeInfo = new RowTypeInfo(tableSink.schema.getFieldTypes(), tableSink.schema.getFieldNames());
+        tableSink.serializationSchema = new JsonRowSerializationSchema(rowTypeInfo);
+        return tableSink;
     }
 
     @Override

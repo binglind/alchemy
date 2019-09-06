@@ -14,7 +14,7 @@ import org.elasticsearch.client.Requests;
 
 import java.io.Serializable;
 
-public class ElasticsearchTableFunction implements MetricFunction, ElasticsearchSinkFunction<Row>, Serializable {
+public class Elasticsearch5TableFunction implements MetricFunction, ElasticsearchSinkFunction<Row>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,10 +31,10 @@ public class ElasticsearchTableFunction implements MetricFunction, Elasticsearch
     private Counter numRecordsOut;
 
 
-    public ElasticsearchTableFunction(String index,
-                                      Integer fieldIndex,
-                                      String type,
-                                      JsonRowSerializationSchema jsonRowSchema) {
+    public Elasticsearch5TableFunction(String index,
+                                       Integer fieldIndex,
+                                       String type,
+                                       JsonRowSerializationSchema jsonRowSchema) {
         if (type == null) {
             this.type = "*";
         } else {

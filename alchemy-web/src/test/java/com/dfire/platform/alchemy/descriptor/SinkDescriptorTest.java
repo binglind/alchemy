@@ -1,7 +1,7 @@
 package com.dfire.platform.alchemy.descriptor;
 
 import com.dfire.platform.alchemy.connectors.dubbo.DubboTableSink;
-import com.dfire.platform.alchemy.connectors.elasticsearch.ElasticsearchTableSink;
+import com.dfire.platform.alchemy.connectors.elasticsearch.Elasticsearch5TableSink;
 import com.dfire.platform.alchemy.connectors.hbase.HbaseTableSink;
 import com.dfire.platform.alchemy.connectors.redis.RedisTableSink;
 import com.dfire.platform.alchemy.connectors.tsdb.TsdbTableSink;
@@ -95,7 +95,7 @@ public class SinkDescriptorTest {
         assertThat(sinkDescriptor.getIndexField()).isNotNull();
         assertThat(sinkDescriptor.getFailureHandler()).isNotNull();
         assertThat(sinkDescriptor.getConfig()).isNotNull();
-        ElasticsearchTableSink tableSink = sinkDescriptor.transform();
+        Elasticsearch5TableSink tableSink = sinkDescriptor.transform();
         assertThat(tableSink).isNotNull();
     }
 

@@ -138,25 +138,16 @@ public class Es6SinkDescriptor extends SinkDescriptor {
     }
 
     @Override
-    public <T> T transform(TableSchema param) throws Exception {
+    public <T> T transform() throws Exception {
         TableSchema tableSchema = createTableSchema();
-        if (tableSchema == null) {
-            tableSchema = param;
-        }
-        if (tableSchema == null) {
-            throw new IllegalArgumentException("TableSchema must be not null");
-        }
         Elasticsearch6Properties properties = new Elasticsearch6Properties();
         BeanUtils.copyProperties(this, properties);
-        properties.setTableSchema(tableSchema);
+        if (tableSchema != null) {
+            properties.setTableSchema(tableSchema);
+        }
         return (T) new Elasticsearch6TableSink(properties);
     }
 
-
-    @Override
-    public <T> T transform() throws Exception {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public void validate() throws Exception {

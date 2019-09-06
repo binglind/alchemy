@@ -32,7 +32,7 @@ public class Elasticsearch6SinkFunction implements ElasticsearchSinkFunction<Tup
     private final int[] keyFieldIndices;
 
     public Elasticsearch6SinkFunction(String index, Integer fieldIndex, String docType, String keyDelimiter, String keyNullLiteral, SerializationSchema<Row> serializationSchema, XContentType contentType, ElasticsearchUpsertTableSinkBase.RequestFactory requestFactory, int[] keyFieldIndices) {
-        this.index = Preconditions.checkNotNull(index);
+        this.index = index;
         this.fieldIndex = fieldIndex;
         this.docType = Preconditions.checkNotNull(docType);
         this.keyDelimiter = Preconditions.checkNotNull(keyDelimiter);
