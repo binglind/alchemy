@@ -73,13 +73,13 @@ public class StatuService implements InitializingBean {
                             if (jobStatusResponse.isSuccess()) {
                                 JobStatus jobStatus = jobStatusResponse.getStatus();
                                 if (jobStatus != job.getStatus()) {
-                                    job.setStatus(jobStatus);
-                                    jobRepository.save(job);
                                     if (job.getStatus() != JobStatus.FAILED && JobStatus.FAILED == jobStatus) {
                                         alarmService.alert(business.getName(), job.getName());
                                     }else if(job.getStatus() == JobStatus.FAILED && jobStatus== JobStatus.RUNNING){
                                         alarmService.recover(business.getName(), job.getName());
                                     }
+                                    job.setStatus(jobStatus);
+                                    jobRepository.save(job);
                                 }
                             } else {
                                 log.warn("request status failed, msg:{}", jobStatusResponse.getMessage());

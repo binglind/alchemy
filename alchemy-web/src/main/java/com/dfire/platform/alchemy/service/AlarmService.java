@@ -12,11 +12,11 @@ public class AlarmService {
     }
 
     public void alert(String businessName, String jobName){
-        dingTalkService.sendMessage("####任务失败", String.format("####业务：%s ##### 任务：%s", businessName,  jobName));
+        dingTalkService.sendMessage("flink任务失败", String.format("#### 状态：失败 \n #### 业务：%s \n #### 任务：%s", businessName,  jobName));
     }
 
     public void recover(String businessName, String jobName){
-        dingTalkService.sendMessage("####任务恢复", String.format("####业务：%s ##### 任务：%s", businessName,  jobName));
+        dingTalkService.sendMessage("flink任务恢复", String.format("#### 状态：恢复 \n ### 业务：%s \n #### 任务：%s", businessName,  jobName));
     }
 
 }
