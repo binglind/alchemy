@@ -22,6 +22,7 @@ import com.dfire.platform.alchemy.domain.enumeration.TableType;
 import com.dfire.platform.alchemy.util.FileUtil;
 import com.dfire.platform.alchemy.util.JarArgUtil;
 import com.dfire.platform.alchemy.util.ThreadLocalClassLoader;
+import com.dfire.platform.alchemy.web.rest.errors.FailedSubmitJobException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.calcite.sql.SqlJoin;
@@ -51,6 +52,7 @@ import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.graph.StreamGraph;
 import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableSchema;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.table.functions.AggregateFunction;
 import org.apache.flink.table.functions.ScalarFunction;
@@ -76,6 +78,7 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import static com.dfire.platform.alchemy.client.request.SqlSubmitFlinkRequest.CONFIG_KEY_DELAY_BETWEEN_ATTEMPTS;
 import static com.dfire.platform.alchemy.client.request.SqlSubmitFlinkRequest.CONFIG_KEY_DELAY_INTERVAL;
@@ -100,11 +103,11 @@ public abstract class AbstractFlinkClient implements FlinkClient {
 
     public AbstractFlinkClient(JarLoader jarLoader, List<String> dependencies) {
         this.dependencies = dependencies;
-        this.jarLoader= jarLoader;
+        this.jarLoader = jarLoader;
     }
 
     public SavepointResponse cancel(ClusterClient clusterClient, CancelFlinkRequest request) throws Exception {
-        if(StringUtils.isEmpty(request.getJobID())){
+        if (StringUtils.isEmpty(request.getJobID())) {
             return new SavepointResponse("the job is not submit yet");
         }
         boolean savePoint = request.getSavePoint() != null && request.getSavePoint().booleanValue();
@@ -119,17 +122,18 @@ public abstract class AbstractFlinkClient implements FlinkClient {
     }
 
     public Response rescale(ClusterClient clusterClient, RescaleFlinkRequest request) throws Exception {
-        if(StringUtils.isEmpty(request.getJobID())){
+        if (StringUtils.isEmpty(request.getJobID())) {
             return new Response("the job is not submit yet");
         }
         CompletableFuture<Acknowledge> future
-            = clusterClient.rescaleJob(JobID.fromHexString(request.getJobID()), request.getNewParallelism());;
+            = clusterClient.rescaleJob(JobID.fromHexString(request.getJobID()), request.getNewParallelism());
+        ;
         future.get();
         return new Response(true);
     }
 
     public SavepointResponse savepoint(ClusterClient clusterClient, SavepointFlinkRequest request) throws Exception {
-        if(StringUtils.isEmpty(request.getJobID())){
+        if (StringUtils.isEmpty(request.getJobID())) {
             return new SavepointResponse("the job is not submit yet");
         }
         CompletableFuture<String> future
@@ -138,7 +142,7 @@ public abstract class AbstractFlinkClient implements FlinkClient {
     }
 
     public JobStatusResponse status(ClusterClient clusterClient, JobStatusRequest request) throws Exception {
-        if(StringUtils.isEmpty(request.getJobID())){
+        if (StringUtils.isEmpty(request.getJobID())) {
             return new JobStatusResponse("the job is not submit yet");
         }
         CompletableFuture<JobStatus> jobStatusCompletableFuture
@@ -167,56 +171,61 @@ public abstract class AbstractFlinkClient implements FlinkClient {
         return new JobStatusResponse(null);
     }
 
-    public SubmitFlinkResponse submitJar(ClusterClient clusterClient, JarSubmitFlinkRequest request) throws Exception {
+    public void submitJar(ClusterClient clusterClient, JarSubmitFlinkRequest request, Consumer<SubmitFlinkResponse> consumer) throws Exception {
         LOGGER.trace("start submit jar request,entryClass:{}", request.getEntryClass());
         try {
             File file = jarLoader.downLoad(request.getDependency(), request.isCache());
             List<String> programArgs = JarArgUtil.tokenizeArguments(request.getProgramArgs());
             PackagedProgram program = new PackagedProgram(file, request.getEntryClass(),
                 programArgs.toArray(new String[programArgs.size()]));
-            ClassLoader classLoader = null;
-            try {
-                classLoader = program.getUserCodeClassLoader();
-            } catch (Exception e) {
-                LOGGER.warn(e.getMessage());
-            }
-
+            final ClassLoader classLoader = program.getUserCodeClassLoader();
             Optimizer optimizer = new Optimizer(new DataStatistics(), new DefaultCostEstimator(), new Configuration());
             FlinkPlan plan = ClusterClient.getOptimizedPlan(optimizer, program, request.getParallelism());
             // Savepoint restore settings
-            SavepointRestoreSettings savepointSettings = SavepointRestoreSettings.none();
+            final SavepointRestoreSettings savepointSettings;
             String savepointPath = request.getSavepointPath();
             if (StringUtils.isNotEmpty(savepointPath)) {
                 Boolean allowNonRestoredOpt = request.getAllowNonRestoredState();
                 boolean allowNonRestoredState = allowNonRestoredOpt != null && allowNonRestoredOpt.booleanValue();
                 savepointSettings = SavepointRestoreSettings.forPath(savepointPath, allowNonRestoredState);
+            } else {
+                savepointSettings = SavepointRestoreSettings.none();
             }
             // set up the execution environment
             List<URL> jarFiles = FileUtil.createPath(file);
-            JobSubmissionResult submissionResult
-                = clusterClient.run(plan, jarFiles, Collections.emptyList(), classLoader, savepointSettings);
-            LOGGER.trace(" submit jar request sucess,jobId:{}", submissionResult.getJobID());
-            return new SubmitFlinkResponse(true, submissionResult.getJobID().toString());
-        } catch (Exception e) {
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    JobSubmissionResult submissionResult
+                        = clusterClient.run(plan, jarFiles, Collections.emptyList(), classLoader, savepointSettings);
+                    LOGGER.trace(" submit jar request sucess,jobId:{}", submissionResult.getJobID());
+                    return new SubmitFlinkResponse(true, submissionResult.getJobID().toString());
+                } catch (Exception e) {
+                    String term = e.getMessage() == null ? "." : (": " + e.getMessage());
+                    LOGGER.error(" submit sql request fail", e);
+                    return new SubmitFlinkResponse(term);
+                }
+            }).thenAccept(consumer::accept);
+
+        } catch (Throwable e) {
             String term = e.getMessage() == null ? "." : (": " + e.getMessage());
             LOGGER.error(" submit jar request fail", e);
-            return new SubmitFlinkResponse(term);
+            throw new FailedSubmitJobException(term);
         }
     }
 
-    public SubmitFlinkResponse submitSql(ClusterClient clusterClient, SqlSubmitFlinkRequest request) throws Exception {
+    public void submitSql(ClusterClient clusterClient, SqlSubmitFlinkRequest request, Consumer<SubmitFlinkResponse> consumer) throws Exception {
         LOGGER.trace("start submit sql request,jobName:{},sql:{}", request.getJobName(), request.getSqls().toArray());
         if (CollectionUtils.isEmpty(request.getSources())) {
-            return new SubmitFlinkResponse(ResultMessage.SOURCE_EMPTY.getMsg());
+            throw new FailedSubmitJobException(ResultMessage.SOURCE_EMPTY.getMsg());
         }
         if (CollectionUtils.isEmpty(request.getSinks())) {
-            return new SubmitFlinkResponse(ResultMessage.SINK_EMPTY.getMsg());
+            throw new FailedSubmitJobException(ResultMessage.SINK_EMPTY.getMsg());
         }
         if (CollectionUtils.isEmpty(request.getSqls())) {
-            return new SubmitFlinkResponse(ResultMessage.SQL_EMPTY.getMsg());
+            throw new FailedSubmitJobException(ResultMessage.SQL_EMPTY.getMsg());
         }
-        if(request.getSqls().size() != request.getSinks().size()){
-            return new SubmitFlinkResponse(ResultMessage.INVALID_SQL.getMsg());
+        if (request.getSqls().size() != request.getSinks().size()) {
+            throw new FailedSubmitJobException(ResultMessage.INVALID_SQL.getMsg());
         }
         final StreamExecutionEnvironment execEnv = StreamExecutionEnvironment.createLocalEnvironment();
         StreamTableEnvironment env = StreamTableEnvironment.getTableEnvironment(execEnv);
@@ -231,25 +240,27 @@ public abstract class AbstractFlinkClient implements FlinkClient {
             registerFunction(env, request);
             registerSource(env, request, tableSources, sideSources);
             List<String> sqls = request.getSqls();
-            for (int i =0 ; i< sqls.size(); i++) {
+            for (int i = 0; i < sqls.size(); i++) {
                 Table table = registerSql(env, sqls.get(i), tableSources, sideSources);
                 registerSink(table, request.getSinks().get(i));
             }
             StreamGraph streamGraph = execEnv.getStreamGraph();
             streamGraph.setJobName(request.getJobName());
-            try {
-                JobSubmissionResult submissionResult
-                    = clusterClient.run(streamGraph, urls, Collections.emptyList(), usercodeClassLoader);
-                LOGGER.trace(" submit sql request success,jobId:{}", submissionResult.getJobID());
-                return new SubmitFlinkResponse(true, submissionResult.getJobID().toString());
-            } catch (Exception e) {
-                String term = e.getMessage() == null ? "." : (": " + e.getMessage());
-                LOGGER.error(" submit sql request fail", e);
-                return new SubmitFlinkResponse(term);
-            }
-        }catch (Throwable e){
-            throw e;
-        }finally {
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    JobSubmissionResult submissionResult
+                        = clusterClient.run(streamGraph, urls, Collections.emptyList(), usercodeClassLoader);
+                    LOGGER.trace(" submit sql request success,jobId:{}", submissionResult.getJobID());
+                    return new SubmitFlinkResponse(true, submissionResult.getJobID().toString());
+                } catch (Exception e) {
+                    String term = e.getMessage() == null ? "." : (": " + e.getMessage());
+                    LOGGER.error(" submit sql request fail", e);
+                    return new SubmitFlinkResponse(term);
+                }
+            }).thenAccept(consumer::accept);
+        } catch (Throwable e) {
+            throw new FailedSubmitJobException(e.getMessage());
+        } finally {
             ThreadLocalClassLoader.clear();
         }
     }
@@ -257,14 +268,14 @@ public abstract class AbstractFlinkClient implements FlinkClient {
     private List<URL> findJobDependencies(SqlSubmitFlinkRequest request) throws Exception {
         List<URL> urls = Lists.newArrayList();
         if (!CollectionUtils.isEmpty(request.getDependencies())) {
-            for(String dependency : request.getDependencies()){
-                loadUrl(dependency, true , urls);
+            for (String dependency : request.getDependencies()) {
+                loadUrl(dependency, request.isCache(), urls);
             }
         }
         if (CollectionUtils.isNotEmpty(request.getUdfs())) {
             request.getUdfs().forEach(udfDescriptor -> {
                 try {
-                    loadUrl(udfDescriptor.getDependency(), true , urls);
+                    loadUrl(udfDescriptor.getDependency(), request.isCache(), urls);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -301,12 +312,14 @@ public abstract class AbstractFlinkClient implements FlinkClient {
 
     private void registerSink(Table table, SinkDescriptor sinkDescriptor)
         throws Exception {
-        TableSink tableSink = sinkDescriptor.transform(table.getSchema());
+        TableSchema tableSchema = table.getSchema();
+        TableSink tableSink = sinkDescriptor.transform(tableSchema);
         table.writeToSink(tableSink);
+        LOGGER.info("register sink, name:{}, class:{}", sinkDescriptor.getName(), sinkDescriptor.getClass());
     }
 
     private Table registerSql(StreamTableEnvironment env, String sql, Map<String, TableSource> tableSources,
-        Map<String, SourceDescriptor> sideSources) throws Exception {
+                              Map<String, SourceDescriptor> sideSources) throws Exception {
         if (sideSources.isEmpty()) {
             return env.sqlQuery(sql);
         }
@@ -320,12 +333,12 @@ public abstract class AbstractFlinkClient implements FlinkClient {
                 modifyNode = null;
             }
             if (last.getKind() == SqlKind.SELECT) {
-                SqlSelect sqlSelect = (SqlSelect)last;
+                SqlSelect sqlSelect = (SqlSelect) last;
                 SqlNode selectFrom = sqlSelect.getFrom();
                 if (SqlKind.JOIN != selectFrom.getKind()) {
                     continue;
                 }
-                SqlJoin sqlJoin = (SqlJoin)selectFrom;
+                SqlJoin sqlJoin = (SqlJoin) selectFrom;
                 Alias sideAlias = SideParser.getTableName(sqlJoin.getRight());
                 Alias leftAlias = SideParser.getTableName(sqlJoin.getLeft());
                 if (isSide(sideSources.keySet(), leftAlias.getTable())) {
@@ -382,7 +395,7 @@ public abstract class AbstractFlinkClient implements FlinkClient {
     }
 
     private void loadFunction(StreamTableEnvironment env, List<String> functionNames,
-        ServiceLoader<BaseFunction> serviceLoader) {
+                              ServiceLoader<BaseFunction> serviceLoader) {
         Iterator<BaseFunction> iterator = serviceLoader.iterator();
         while (iterator.hasNext()) {
             BaseFunction function = iterator.next();
@@ -397,14 +410,15 @@ public abstract class AbstractFlinkClient implements FlinkClient {
 
     private void register(StreamTableEnvironment env, String name, Object function) {
         if (function instanceof TableFunction) {
-            env.registerFunction(name, (TableFunction)function);
+            env.registerFunction(name, (TableFunction) function);
         } else if (function instanceof AggregateFunction) {
-            env.registerFunction(name, (AggregateFunction)function);
+            env.registerFunction(name, (AggregateFunction) function);
         } else if (function instanceof ScalarFunction) {
-            env.registerFunction(name, (ScalarFunction)function);
+            env.registerFunction(name, (ScalarFunction) function);
         } else {
             throw new RuntimeException("Unknown UDF {} was found." + name);
         }
+        LOGGER.info("register udf, name:{}, class:{}", name, function.getClass());
     }
 
     private void registerSource(StreamTableEnvironment env, SqlSubmitFlinkRequest request,
@@ -415,16 +429,19 @@ public abstract class AbstractFlinkClient implements FlinkClient {
                 switch (tableType) {
                     case SIDE:
                         sideSources.put(consumer.getName(), consumer);
+                        LOGGER.info("register side table, name:{}, class:{}", consumer.getName(), consumer.getClass());
                         break;
                     case VIEW:
                         String sql = consumer.getSql();
                         Table table = registerSql(env, sql, tableSources, sideSources);
                         env.registerTable(consumer.getName(), table);
+                        LOGGER.info("register view, name:{}", consumer.getName());
                         break;
                     case TABLE:
                         TableSource tableSource = consumer.transform();
                         env.registerTableSource(consumer.getName(), tableSource);
                         tableSources.put(consumer.getName(), tableSource);
+                        LOGGER.info("register table, name:{}, class:{}", consumer.getName(), tableSource.getClass());
                         break;
                     default:
                         throw new UnsupportedOperationException("Unknow tableType" + tableType);
@@ -489,7 +506,7 @@ public abstract class AbstractFlinkClient implements FlinkClient {
 
     }
 
-    private void loadUrl(String path, boolean cache,  List<URL> urls) throws Exception {
+    private void loadUrl(String path, boolean cache, List<URL> urls) throws Exception {
         if (org.apache.commons.lang3.StringUtils.isEmpty(path)) {
             return;
         }
@@ -514,17 +531,17 @@ public abstract class AbstractFlinkClient implements FlinkClient {
     }
 
     private List<URL> createGlobalPath(List<String> paths) throws Exception {
-        if (org.springframework.util.CollectionUtils.isEmpty(paths)){
+        if (org.springframework.util.CollectionUtils.isEmpty(paths)) {
             return new ArrayList<>(0);
         }
         List<URL> jarFiles = new ArrayList<>(paths.size());
-        for (String path : paths){
+        for (String path : paths) {
             try {
-                URL jarFileUrl =  jarLoader.find(path, true);
+                URL jarFileUrl = jarLoader.find(path, true);
                 jarFiles.add(jarFileUrl);
                 JobWithJars.checkJarFile(jarFileUrl);
             } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("dependency is invalid '" +path + "'", e);
+                throw new IllegalArgumentException("dependency is invalid '" + path + "'", e);
             } catch (IOException e) {
                 throw new RuntimeException("Problem with dependency " + path, e);
             }

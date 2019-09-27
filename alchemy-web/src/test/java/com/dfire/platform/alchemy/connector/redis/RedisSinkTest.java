@@ -2,6 +2,7 @@ package com.dfire.platform.alchemy.connector.redis;
 
 import com.dfire.platform.alchemy.client.request.SqlSubmitFlinkRequest;
 import com.dfire.platform.alchemy.client.response.Response;
+import com.dfire.platform.alchemy.client.response.SubmitFlinkResponse;
 import com.dfire.platform.alchemy.connector.BaseConnectorTest;
 import com.dfire.platform.alchemy.descriptor.RedisSinkDescriptor;
 import com.dfire.platform.alchemy.descriptor.SinkDescriptor;
@@ -70,6 +71,9 @@ public class RedisSinkTest extends BaseConnectorTest {
         sqlSubmitFlinkRequest.setSources(Lists.newArrayList(sourceDescriptor));
         sqlSubmitFlinkRequest.setSinks(Lists.newArrayList(redisSinkDescriptor));
         sqlSubmitFlinkRequest.setSqls(SqlParseUtil.findQuerySql(Lists.newArrayList(sql)));
-        return client.submit(sqlSubmitFlinkRequest);
+        client.submit(sqlSubmitFlinkRequest, (SubmitFlinkResponse response) -> {
+            }
+        );
+        return new Response(true);
     }
 }

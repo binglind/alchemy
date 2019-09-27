@@ -1,10 +1,16 @@
 package com.dfire.platform.alchemy.client;
 
-import com.dfire.platform.alchemy.client.request.*;
+import com.dfire.platform.alchemy.client.request.CancelFlinkRequest;
+import com.dfire.platform.alchemy.client.request.JobStatusRequest;
+import com.dfire.platform.alchemy.client.request.RescaleFlinkRequest;
+import com.dfire.platform.alchemy.client.request.SavepointFlinkRequest;
+import com.dfire.platform.alchemy.client.request.SubmitRequest;
 import com.dfire.platform.alchemy.client.response.JobStatusResponse;
 import com.dfire.platform.alchemy.client.response.Response;
 import com.dfire.platform.alchemy.client.response.SavepointResponse;
 import com.dfire.platform.alchemy.client.response.SubmitFlinkResponse;
+
+import java.util.function.Consumer;
 
 /**
  * @author congbai
@@ -20,7 +26,7 @@ public interface FlinkClient {
 
     JobStatusResponse status(JobStatusRequest request) throws Exception;
 
-    SubmitFlinkResponse submit(SubmitRequest request) throws Exception;
+    void submit(SubmitRequest request, Consumer<SubmitFlinkResponse> consumer)  throws Exception;
 
     String getWebInterfaceURL();
 

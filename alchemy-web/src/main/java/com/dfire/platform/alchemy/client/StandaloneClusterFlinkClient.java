@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.client.program.ClusterClient;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author congbai
@@ -55,20 +56,23 @@ public class StandaloneClusterFlinkClient<T extends ClusterClient> extends Abstr
     }
 
     @Override
-    public SubmitFlinkResponse submit(SubmitRequest request) throws Exception {
+    public void submit(SubmitRequest request, Consumer<SubmitFlinkResponse> consumer) throws Exception {
         if (request instanceof JarSubmitFlinkRequest) {
-            return submitJar(clusterClient, (JarSubmitFlinkRequest)request);
+            submitJar(clusterClient, (JarSubmitFlinkRequest) request, consumer);
         } else if (request instanceof SqlSubmitFlinkRequest) {
-            return submitSql(clusterClient, (SqlSubmitFlinkRequest)request);
+            submitSql(clusterClient, (SqlSubmitFlinkRequest) request, consumer);
+        } else {
+            throw new UnsupportedOperationException();
         }
-        throw new UnsupportedOperationException();
+
     }
+
 
     @Override
     public String getWebInterfaceURL() {
-        if(StringUtils.isEmpty(this.webInterfaceURL)){
+        if (StringUtils.isEmpty(this.webInterfaceURL)) {
             return clusterClient.getWebInterfaceURL();
-        }else{
+        } else {
             return this.webInterfaceURL;
         }
     }

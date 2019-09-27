@@ -1,7 +1,6 @@
 package com.dfire.platform.alchemy.web.rest.errors;
 
 import io.github.jhipster.web.util.HeaderUtil;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -113,4 +112,12 @@ public class ExceptionTranslator implements ProblemHandling {
             .build();
         return create(ex, problem, request);
     }
+
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleSubmitFailure(FailedSubmitJobException ex, NativeWebRequest request) {
+        return create(ex, request, HeaderUtil.createFailureAlert(applicationName, false, null, null, ex.getMessage()));
+    }
+
+
 }

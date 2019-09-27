@@ -34,6 +34,10 @@ public class SqlSubmitFlinkRequest extends AbstractSubmitRequest {
     private Map<String, Object> restartParams;
     private CheckpointConfig checkpointCfg;
     private List<String> sqls;
+    /**
+     *  是否需要cache 下载好的jar包
+     */
+    private boolean cache;
 
     public List<String> getDependencies() {
         return dependencies;
@@ -129,6 +133,14 @@ public class SqlSubmitFlinkRequest extends AbstractSubmitRequest {
 
     public void setSinks(List<SinkDescriptor> sinks) {
         this.sinks = sinks;
+    }
+
+    public boolean isCache() {
+        return cache;
+    }
+
+    public void setCache(boolean cache) {
+        this.cache = cache;
     }
 
     @Override

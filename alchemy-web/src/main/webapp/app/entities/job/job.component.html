@@ -88,7 +88,7 @@
                                         </li>
                                         <li>
                                             <a class="dropdown-item"  [routerLink]="['/', 'job', { outlets: { popup: job.id + '/cancel'} }]" replaceUrl="true"
-                                               queryParamsHandling="merge"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" ">
+                                               queryParamsHandling="merge"  routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                                                 <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                                                 <span jhiTranslate="global.menu.job.cancel">Cancel</span>
                                             </a>

@@ -36,26 +36,26 @@ spring:
     serialization:
       indent-output: true
   datasource:
-      type: com.zaxxer.hikari.HikariDataSource
-      url: jdbc:h2:mem:alchemy;MODE=MYSQL;DB_CLOSE_DELAY=-1
-      username: alchemy
-      password:
-      hikari:
-        poolName: Hikari
-        auto-commit: false
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:h2:mem:alchemy;MODE=MYSQL;DB_CLOSE_DELAY=-1
+    username: alchemy
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
   h2:
-      console:
-        enabled: false
+    console:
+      enabled: false
   jpa:
-      database-platform: io.github.jhipster.domain.util.FixedH2Dialect
-      database: H2
-      show-sql: true
-      properties:
-        hibernate.id.new_generator_mappings: true
-        hibernate.connection.provider_disables_autocommit: true
-        hibernate.cache.use_second_level_cache: false
-        hibernate.cache.use_query_cache: false
-        hibernate.generate_statistics: false
+    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database: H2
+    show-sql: true
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
@@ -68,26 +68,29 @@ spring:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
     cache: false
+  mvc:
+    async:
+      request-timeout: 20000
 
 server:
   port: 8080
 
 alchemy:
   repository:
-    release:  http://maven.aliyun.com/nexus/content/groups/public/ #必须替换为自己的私服地址
+    release: http://maven.aliyun.com/nexus/content/groups/public/ #必须替换为自己的私服地址
     snapshot: http://maven.aliyun.com/nexus/content/groups/public/ #必须替换为自己的私服地址
   dingtalk:
     webhook: https://oapi.dingtalk.com/robot/send?access_token=yourtoken
   openshift:
-      enable: false  #openshift开关，默认关闭
-      url: https://www.openshift.com  # 替换成自己的openshift平台地址
-      username: xxxx
-      password: xxxx
-      namespace: xxxx
-      serviceAccount: xxx
-      serviceAccountName: xxxxx
-      hadoopVolumeName: xxxx  #与hadoop相关configMap的name，需要事先创建好，比如创建了一个configMap,加入了hdfs-site.xml，configMapd的name叫hadoop
-      hadoopUserName: xxxx  # hadoop的用户名
+    enable: false #openshift开关，默认关闭
+    url: https://www.openshift.com # 替换成自己的openshift平台地址
+    username: xxxx
+    password: xxxx
+    namespace: xxxx
+    serviceAccount: xxx
+    serviceAccountName: xxxxx
+    hadoopVolumeName: xxxx #与hadoop相关configMap的name，需要事先创建好，比如创建了一个configMap,加入了hdfs-site.xml，configMapd的name叫hadoop
+    hadoopUserName: xxxx # hadoop的用户名
 # ===================================================================
 # JHipster specific properties
 #

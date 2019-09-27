@@ -8,6 +8,8 @@ import com.dfire.platform.alchemy.client.response.SubmitFlinkResponse;
 import org.apache.flink.configuration.Configuration;
 import org.apache.hadoop.yarn.client.api.YarnClient;
 
+import java.util.function.Consumer;
+
 /**
  * todo 支持yarn mode
  * 
@@ -46,7 +48,7 @@ public class YarnFlinkClient implements FlinkClient {
     }
 
     @Override
-    public SubmitFlinkResponse submit(SubmitRequest submitRequest) {
+    public void submit(SubmitRequest request, Consumer<SubmitFlinkResponse> consumer) {
         throw new UnsupportedOperationException();
     }
 

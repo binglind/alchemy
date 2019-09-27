@@ -1,21 +1,7 @@
 package com.dfire.platform.alchemy.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.dfire.platform.alchemy.client.FlinkClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-
 import com.dfire.platform.alchemy.client.ClientManager;
+import com.dfire.platform.alchemy.client.FlinkClient;
 import com.dfire.platform.alchemy.client.request.CancelFlinkRequest;
 import com.dfire.platform.alchemy.client.request.JarSubmitFlinkRequest;
 import com.dfire.platform.alchemy.client.request.RescaleFlinkRequest;
@@ -45,7 +31,21 @@ import com.dfire.platform.alchemy.service.dto.JobDTO;
 import com.dfire.platform.alchemy.service.mapper.JobMapper;
 import com.dfire.platform.alchemy.service.util.SqlParseUtil;
 import com.dfire.platform.alchemy.util.BindPropertiesUtil;
+import com.dfire.platform.alchemy.web.rest.errors.FailedSubmitJobException;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Job}.
@@ -71,8 +71,8 @@ public class JobServiceImpl implements JobService {
     private final ClientManager clientManager;
 
     public JobServiceImpl(JobRepository jobRepository, JobSqlRepository jobSqlRepository,
-        SourceRepository sourceRepository, UdfRepository udfRepository, SinkRepository sinkRepository,
-        JobMapper jobMapper, ClientManager clientManager) {
+                          SourceRepository sourceRepository, UdfRepository udfRepository, SinkRepository sinkRepository,
+                          JobMapper jobMapper, ClientManager clientManager) {
         this.jobRepository = jobRepository;
         this.jobSqlRepository = jobSqlRepository;
         this.sourceRepository = sourceRepository;
@@ -132,7 +132,7 @@ public class JobServiceImpl implements JobService {
         log.debug("Request to delete Job : {}", id);
         Optional<Job> jobOptional = jobRepository.findById(id);
         Job job = jobOptional.get();
-        if(JobStatus.RUNNING == job.getStatus()){
+        if (JobStatus.RUNNING == job.getStatus()) {
             cancel(id);
         }
         jobRepository.deleteById(id);
@@ -142,39 +142,48 @@ public class JobServiceImpl implements JobService {
     public Response submit(Long id) throws Exception {
         Optional<Job> jobOptional = jobRepository.findById(id);
         Job job = jobOptional.get();
-        if(JobStatus.RUNNING.equals(job.getStatus())){
+        if (JobStatus.RUNNING.equals(job.getStatus())) {
             return new Response(false, "the job is running ");
         }
         if (job.getCluster() == null) {
             return new Response(false, "the job's cluster is null ");
         }
-        final FlinkClient client = clientManager.getClient(job.getCluster().getId());
-        SubmitRequest submitRequest;
-        if (JobType.JAR == job.getType()) {
-            submitRequest = createJarSubmitRequest(job);
-        } else {
-            List<JobSql> jobSqls = jobSqlRepository.findByJobId(id);
-            if (CollectionUtils.isEmpty(jobSqls)) {
-                return new Response(false, "the job's sql is null");
+        try {
+            final FlinkClient client = clientManager.getClient(job.getCluster().getId());
+            SubmitRequest submitRequest;
+            if (JobType.JAR == job.getType()) {
+                submitRequest = createJarSubmitRequest(job);
+            } else {
+                List<JobSql> jobSqls = jobSqlRepository.findByJobId(id);
+                if (CollectionUtils.isEmpty(jobSqls)) {
+                    return new Response(false, "the job's sql is null");
+                }
+                submitRequest = createSqlSubmitRequest(job, jobSqls);
             }
-            submitRequest = createSqlSubmitRequest(job, jobSqls);
-        }
-        SubmitFlinkResponse response =client.submit(submitRequest);
-        if (response.isSuccess()) {
+            client.submit(submitRequest, (SubmitFlinkResponse response) -> {
+                if (response.isSuccess()) {
+//                    job.setStatus(JobStatus.SUBMIT);
+                    job.setClusterJobId(response.getJobId());
+                } else {
+                    job.setStatus(JobStatus.FAILED);
+                }
+                jobRepository.saveAndFlush(job);
+            });
             job.setStatus(JobStatus.SUBMIT);
-            job.setClusterJobId(response.getJobId());
-        } else {
-            job.setStatus(JobStatus.FAILED);
+            jobRepository.save(job);
+            return new Response(true);
+        } catch (Exception e) {
+            log.error("Failed submit job", e);
+            throw new FailedSubmitJobException(e.getMessage());
         }
-        jobRepository.save(job);
-        return response;
     }
 
     private SubmitRequest createSqlSubmitRequest(Job job, List<JobSql> jobSqls) throws Exception {
         List<String> sqlList
             = jobSqls.stream().map(jobSql -> jobSql.getSql()).collect(Collectors.toCollection(ArrayList::new));
         SqlSubmitFlinkRequest sqlSubmitFlinkRequest
-            = BindPropertiesUtil.bindProperties(job.getConfig(), SqlSubmitFlinkRequest.class);;
+            = BindPropertiesUtil.bindProperties(job.getConfig(), SqlSubmitFlinkRequest.class);
+        ;
         List<String> sourceNames = Lists.newArrayList();
         List<String> tableNames = Lists.newArrayList();
         List<String> udfNames = Lists.newArrayList();
@@ -197,7 +206,7 @@ public class JobServiceImpl implements JobService {
     }
 
     private void parseView(Job job, List<String> tableNames, List<String> sourceNames, List<String> udfNames,
-        List<String> sinkNames) throws Exception {
+                           List<String> sinkNames) throws Exception {
         List<String> sources = Lists.newArrayList(sourceNames);
         for (String name : sources) {
             if (tableNames.contains(name)) {
@@ -233,7 +242,7 @@ public class JobServiceImpl implements JobService {
             Optional<Udf> udfOptional = udfRepository.findOneByBusinessIdAndName(job.getBusiness().getId(), name);
             if (udfOptional.isPresent()) {
                 udfDescriptors.add(UdfDescriptor.from(udfOptional.get()));
-            }else{
+            } else {
                 //flink自定义的函数也属于table udf
                 log.warn("table udf：{} doesn't exist in alchemy", name);
             }
@@ -273,10 +282,10 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Response cancelWithSavepoint(Long id, String savepointDirectory) throws Exception {
-       return cancelWithSavepoint(id, true, savepointDirectory);
+        return cancelWithSavepoint(id, true, savepointDirectory);
     }
 
-    private Response cancelWithSavepoint(Long id, boolean savepoint,  String savepointDirectory) throws Exception {
+    private Response cancelWithSavepoint(Long id, boolean savepoint, String savepointDirectory) throws Exception {
         Optional<Job> jobOptional = jobRepository.findById(id);
         Job job = jobOptional.get();
         if (job.getCluster() == null) {
@@ -286,7 +295,7 @@ public class JobServiceImpl implements JobService {
         CancelFlinkRequest cancelFlinkRequest
             = new CancelFlinkRequest(job.getClusterJobId(), savepoint, savepointDirectory);
         Response response = client.cancel(cancelFlinkRequest);
-        if(response.isSuccess()){
+        if (response.isSuccess()) {
             job.setStatus(JobStatus.CANCELED);
             jobRepository.save(job);
         }
