@@ -97,7 +97,7 @@ public class SqlParseUtil {
 
     /**
      * 解析select 字段中的函数
-     * 
+     *
      * @param sqlNodeList
      * @param udfs
      */
@@ -129,6 +129,10 @@ public class SqlParseUtil {
                 parseFrom(left, sources, udfs);
                 parseFrom(right, sources, udfs);
                 break;
+            case LATERAL:
+                SqlBasicCall basicCall = (SqlBasicCall)from;
+                SqlNode childNode = basicCall.getOperands()[0];
+                parseFunction(childNode, udfs);
             default:
         }
     }
@@ -151,6 +155,13 @@ public class SqlParseUtil {
                 }
             } else {
                 parseFunction(sqlBasicCall.operand(0), udfs);
+            }
+            // 查询嵌套的函数
+            SqlNode[] nodes = sqlBasicCall.getOperands();
+            if(nodes != null && nodes.length > 0){
+                for(SqlNode node : nodes){
+                    parseFunction(node, udfs);
+                }
             }
         }
     }
