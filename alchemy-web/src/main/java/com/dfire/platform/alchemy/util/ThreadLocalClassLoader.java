@@ -10,14 +10,16 @@ public class ThreadLocalClassLoader {
     };
 
     public static void set(ClassLoader classLoader){
-        LOADER.set(classLoader);
+        LOADER.set(Thread.currentThread().getContextClassLoader());
+        Thread.currentThread().setContextClassLoader(classLoader);
     }
 
     public static ClassLoader get(){
-        return LOADER.get();
+        return Thread.currentThread().getContextClassLoader();
     }
 
     public static void clear(){
+        Thread.currentThread().setContextClassLoader(LOADER.get());
         LOADER.remove();
     }
 
