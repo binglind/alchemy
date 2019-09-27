@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author congbai
@@ -16,9 +17,11 @@ public class TsdbSinkDescriptor extends SinkDescriptor {
 
     private String url;
 
-    private List<String> metrics;
+    private Map<String, String> metricValues;
 
     private List<String> tags;
+
+    private String timestampField;
 
     private Integer ioThreadCount;
 
@@ -40,12 +43,20 @@ public class TsdbSinkDescriptor extends SinkDescriptor {
         this.url = url;
     }
 
-    public List<String> getMetrics() {
-        return metrics;
+    public Map<String, String> getMetricValues() {
+        return metricValues;
     }
 
-    public void setMetrics(List<String> metrics) {
-        this.metrics = metrics;
+    public void setMetricValues(Map<String, String> metricValues) {
+        this.metricValues = metricValues;
+    }
+
+    public String getTimestampField() {
+        return timestampField;
+    }
+
+    public void setTimestampField(String timestampField) {
+        this.timestampField = timestampField;
     }
 
     public List<String> getTags() {
@@ -108,13 +119,13 @@ public class TsdbSinkDescriptor extends SinkDescriptor {
     public <T> T transform() throws Exception {
         TsdbProperties tsdbProperties = new TsdbProperties();
         BeanUtils.copyProperties(this, tsdbProperties);
-        return (T)new TsdbTableSink(tsdbProperties);
+        return (T) new TsdbTableSink(tsdbProperties);
     }
 
     @Override
     public void validate() throws Exception {
         Assert.notNull(url, "tsdb的Url不能为空");
-        Assert.notNull(metrics, "tsdb的metrics不能为空");
+        Assert.notNull(metricValues, "tsdb的metricValues不能为空");
         Assert.notNull(tags, "tsdb的tags不能为空");
     }
 

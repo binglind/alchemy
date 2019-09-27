@@ -1,6 +1,7 @@
 url: http://localhost:4242
-metrics:    # 指定metric是哪些字段
-    - score
+metric-values:    # 指定metric是哪些字段 ，对应的value又是哪些字段
+    first : score
 tags:  # 指定tag是哪些字段
-    - first
+    - id
     - last
+timestamp-field: id

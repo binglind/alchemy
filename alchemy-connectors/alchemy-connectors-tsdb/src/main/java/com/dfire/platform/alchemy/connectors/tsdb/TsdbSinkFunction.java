@@ -31,7 +31,7 @@ public class TsdbSinkFunction extends RichSinkFunction<Row> implements MetricFun
 
     private final Map<String, Integer> fieldIndexs;
 
-    private  Counter numRecordsOut;
+    private Counter numRecordsOut;
 
     private transient TsdbHandler tsdbHandler;
 
@@ -41,9 +41,10 @@ public class TsdbSinkFunction extends RichSinkFunction<Row> implements MetricFun
         this.tagMapFunction = tagMapFunction;
         this.fieldIndexs = initFieldIndexs();
     }
+
     private HashMap<String, Integer> initFieldIndexs() {
         HashMap<String, Integer> fieldIndexs = new HashMap<>(this.fieldNames.length);
-        for (int i=0; i<fieldNames.length; i++){
+        for (int i = 0; i < fieldNames.length; i++) {
             fieldIndexs.put(fieldNames[i], i);
         }
         return fieldIndexs;
@@ -67,6 +68,9 @@ public class TsdbSinkFunction extends RichSinkFunction<Row> implements MetricFun
             return;
         }
         TsdbData tsdbData = createDate(value, context);
+        if (tsdbData == null) {
+            return;
+        }
         this.tsdbHandler.execute(tsdbData);
         numRecordsOut = createOrGet(numRecordsOut, getRuntimeContext());
         numRecordsOut.inc();
@@ -74,24 +78,52 @@ public class TsdbSinkFunction extends RichSinkFunction<Row> implements MetricFun
 
     private TsdbData createDate(Row value, Context context) throws Exception {
         Map<String, Number> metrics = createMetrics(value);
-        Map<String, String>  tags = createTags(value);
-        Long timestamp = context.timestamp();
-        if (timestamp == null){
-            timestamp = context.currentWatermark() == Long.MIN_VALUE ? context.currentProcessingTime() : context.currentWatermark();
+        if (metrics == null || metrics.isEmpty()) {
+            return null;
         }
+        Map<String, String> tags = createTags(value);
+        Long timestamp = findTimestamp(context, value);
         return TsdbData.newBuilder().metricValues(metrics).tags(tags).timestamp(timestamp).build();
+    }
+
+    private Long findTimestamp(Context context, Row input) {
+        String timestampField = this.tsdbProperties.getTimestampField();
+        Long timestamp;
+        if (timestampField == null) {
+            timestamp = context.timestamp();
+            if (timestamp == null) {
+                timestamp = context.currentWatermark() == Long.MIN_VALUE ? context.currentProcessingTime() : context.currentWatermark();
+            }
+        } else {
+            Integer index = this.fieldIndexs.get(timestampField);
+            assertFieldNotNull(index, timestampField);
+            Object obj = input.getField(index);
+            if (obj == null) {
+                throw new RuntimeException("timestamp can't be null");
+            }
+            if (obj instanceof java.util.Date) {
+                timestamp = ((java.util.Date) obj).getTime();
+            } else if (obj instanceof Long) {
+                timestamp = (Long) obj;
+            } else {
+                throw new RuntimeException("not support type of " + obj.getClass() + " convert to Long.");
+            }
+        }
+
+        return timestamp;
     }
 
     private Map<String, String> createTags(Row input) throws Exception {
         List<String> tags = this.tsdbProperties.getTags();
         Map<String, String> returnValue = new HashMap<>(tags.size());
-        for (String tag : tags){
-            int index = this.fieldIndexs.get(tag);
+        for (String tag : tags) {
+            Integer index = this.fieldIndexs.get(tag);
+            assertFieldNotNull(index, tag);
             String tagValue = input.getField(index).toString();
-            if(tagMapFunction != null){
+            if (tagMapFunction != null) {
                 tagValue = tagMapFunction.map(tagValue);
             }
-            if(tagValue != null){
+            if (tagValue != null) {
                 returnValue.put(tag.trim(), tagValue);
             }
         }
@@ -99,13 +131,27 @@ public class TsdbSinkFunction extends RichSinkFunction<Row> implements MetricFun
     }
 
     private Map<String, Number> createMetrics(Row input) {
-        List<String> metrics = this.tsdbProperties.getMetrics();
-        Map<String, Number> returnValue = new HashMap<>(metrics.size());
-        for (String metric : metrics){
-            int index = this.fieldIndexs.get(metric);
-            returnValue.put(metric.trim(), (Number)input.getField(index));
+        Map<String, String> metricValues = this.tsdbProperties.getMetricValues();
+        Map<String, Number> returnValue = new HashMap<>(metricValues.size());
+        for (Map.Entry<String, String> metricValue : metricValues.entrySet()) {
+            Integer metricIndex = this.fieldIndexs.get(metricValue.getKey());
+            Integer valueIndex = this.fieldIndexs.get(metricValue.getValue());
+            assertFieldNotNull(metricIndex, metricValue.getKey());
+            assertFieldNotNull(valueIndex, metricValue.getValue());
+            Object metric = input.getField(metricIndex);
+            Object value = input.getField(valueIndex);
+            if (metric == null || value == null) {
+                continue;
+            }
+            returnValue.put(String.valueOf(metric).trim(), (Number) value);
         }
         return returnValue;
+    }
+
+    private void assertFieldNotNull(Integer fieldIndex, String field) {
+        if (fieldIndex == null) {
+            throw new RuntimeException("field " + field + " is not exist");
+        }
     }
 
     @Override

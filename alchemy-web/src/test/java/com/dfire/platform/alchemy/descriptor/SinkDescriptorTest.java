@@ -78,7 +78,7 @@ public class SinkDescriptorTest {
     public void buildTsdbSink() throws Exception {
         File file = ResourceUtils.getFile("classpath:yaml/tsdb-sink.yaml");
         TsdbSinkDescriptor sinkDescriptor = BindPropertiesUtil.bindProperties(file, TsdbSinkDescriptor.class);
-        assertThat(sinkDescriptor.getMetrics()).isNotNull();
+        assertThat(sinkDescriptor.getMetricValues()).isNotNull();
         assertThat(sinkDescriptor.getTags()).isNotNull();
         assertThat(sinkDescriptor.getUrl()).isNotNull();
         TsdbTableSink tableSink = sinkDescriptor.transform();

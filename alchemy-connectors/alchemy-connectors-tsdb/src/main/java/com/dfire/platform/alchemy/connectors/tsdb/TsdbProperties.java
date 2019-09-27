@@ -2,18 +2,21 @@ package com.dfire.platform.alchemy.connectors.tsdb;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author congbai
  * @date 2018/7/12
  */
-public class TsdbProperties implements Serializable{
+public class TsdbProperties implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String url;
 
-    private List<String> metrics;
+    private Map<String, String> metricValues;
+
+    private String timestampField;
 
     private List<String> tags;
 
@@ -39,12 +42,20 @@ public class TsdbProperties implements Serializable{
         this.url = url;
     }
 
-    public List<String> getMetrics() {
-        return metrics;
+    public Map<String, String> getMetricValues() {
+        return metricValues;
     }
 
-    public void setMetrics(List<String> metrics) {
-        this.metrics = metrics;
+    public void setMetricValues(Map<String, String> metricValues) {
+        this.metricValues = metricValues;
+    }
+
+    public String getTimestampField() {
+        return timestampField;
+    }
+
+    public void setTimestampField(String timestampField) {
+        this.timestampField = timestampField;
     }
 
     public List<String> getTags() {
