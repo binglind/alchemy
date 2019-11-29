@@ -7,7 +7,8 @@ export const enum TableType {
 }
 
 export const enum SourceType {
-  KAFKA = 'KAFKA010',
+  KAFKA = 'KAFKA',
+  KAFKA010 = 'KAFKA010',
   MYSQL = 'MYSQL',
   CSV = 'CSV'
 }

@@ -23,7 +23,7 @@ public class SinkDescriptorTest {
     @Test
     public void buildKafkaSink() throws Exception {
         File file = ResourceUtils.getFile("classpath:yaml/kafka-sink.yaml");
-        KafkaSinkDescriptor sinkDescriptor = BindPropertiesUtil.bindProperties(file, KafkaSinkDescriptor.class);
+        KafkaBaseSinkDescriptor sinkDescriptor = BindPropertiesUtil.bindProperties(file, KafkaBaseSinkDescriptor.class);
         assertThat(sinkDescriptor.getTopic()).isEqualTo("stream_dest");
         assertThat(sinkDescriptor.getProperties().get("bootstrap.servers")).isEqualTo("localhost:9092");
         KafkaTableSinkBase tableSink = sinkDescriptor.transform(new TableSchema(new String[]{"test"}, new TypeInformation[]{Types.STRING()}));

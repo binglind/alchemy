@@ -28,7 +28,7 @@ public class SourceDescriptorTest {
     public void buildKafkaSource() throws Exception {
         File file = ResourceUtils.getFile("classpath:yaml/kafka-source.yaml");
         SourceDescriptor sourceDescriptor = BindPropertiesUtil.bindProperties(file, SourceDescriptor.class);
-        KafkaConnectorDescriptor connectorDescriptor = BindPropertiesUtil.bindProperties(sourceDescriptor.getConnector(), KafkaConnectorDescriptor.class);
+        Kafka010ConnectorDescriptor connectorDescriptor = BindPropertiesUtil.bindProperties(sourceDescriptor.getConnector(), Kafka010ConnectorDescriptor.class);
         assertThat(connectorDescriptor.getTopic()).isEqualTo("app-log");
         assertThat(connectorDescriptor.getStartupMode()).isEqualTo("earliest-offset");
         assertThat(connectorDescriptor.getSpecificOffsets().get("1")).isEqualTo("1000");

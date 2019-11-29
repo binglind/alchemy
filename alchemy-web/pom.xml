@@ -5,7 +5,7 @@
     <parent>
         <artifactId>alchemy</artifactId>
         <groupId>com.dfire.platform</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -195,6 +195,11 @@
         <dependency>
             <groupId>com.dfire.platform</groupId>
             <artifactId>alchemy-connectors-kafka010</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dfire.platform</groupId>
+            <artifactId>alchemy-connectors-kafka</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

@@ -27,7 +27,9 @@ public final class Constants {
 
     public static final String TYPE_VALUE_FORMAT_GROK = "grok";
 
-    public static final String CONNECTOR_TYPE_VALUE_KAFKA = "kafka010";
+    public static final String CONNECTOR_TYPE_VALUE_KAFKA010 = "kafka010";
+
+    public static final String CONNECTOR_TYPE_VALUE_KAFKA = "kafka";
 
     public static final String CONNECTOR_TYPE_VALUE_MYSQL = "mysql";
 
@@ -43,7 +45,9 @@ public final class Constants {
 
     public static final String SINK_TYPE_VALUE_HBASE = "hbase";
 
-    public static final String SINK_TYPE_VALUE_KAFKA = "kafka010";
+    public static final String SINK_TYPE_VALUE_KAFKA010 = "kafka010";
+
+    public static final String SINK_TYPE_VALUE_KAFKA = "kafka";
 
     public static final String SINK_TYPE_VALUE_MYSQL = "mysql";
 

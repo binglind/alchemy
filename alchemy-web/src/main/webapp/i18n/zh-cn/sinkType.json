@@ -3,6 +3,7 @@
     "SinkType": {
       "null": "",
       "REDIS": "REDIS",
+      "KAFKA": "KAFKA",
       "KAFKA010": "KAFKA010",
       "MYSQL": "MYSQL",
       "HBASE": "HBASE",

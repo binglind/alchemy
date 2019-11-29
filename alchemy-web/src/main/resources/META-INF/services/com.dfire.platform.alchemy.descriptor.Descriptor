@@ -2,6 +2,8 @@ com.dfire.platform.alchemy.descriptor.Es5SinkDescriptor
 com.dfire.platform.alchemy.descriptor.Es6SinkDescriptor
 com.dfire.platform.alchemy.descriptor.FormatDescriptor
 com.dfire.platform.alchemy.descriptor.HbaseSinkDescriptor
+com.dfire.platform.alchemy.descriptor.Kafka010ConnectorDescriptor
+com.dfire.platform.alchemy.descriptor.Kafka010SinkDescriptor
 com.dfire.platform.alchemy.descriptor.KafkaConnectorDescriptor
 com.dfire.platform.alchemy.descriptor.KafkaSinkDescriptor
 com.dfire.platform.alchemy.descriptor.RedisSinkDescriptor

@@ -35,6 +35,7 @@
 - openshift : 可以在openshift上自动创建和管理集群
 
 ##### 源表
+- [kafka >=1.0.0](/docs/static_files/kafka.md)
 - [kafka010](/docs/static_files/kafka.md)
 - [csv](/docs/static_files/csv.md)
 
