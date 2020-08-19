@@ -88,8 +88,3 @@ resource的config目录下，修改dingtalk的webhook
 * 动态拉取schema字段
 * ......
 
-#### 联系我
-
-  *  钉钉群号：23127379
-  *  微信: The_quiet_night
-  *  邮箱: dongbl1114@gmail.com
